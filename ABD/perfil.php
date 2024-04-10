@@ -1,7 +1,9 @@
 <?php
+
 $tituloPagina="Página de usuario";
 $contenidoPrincipal="Contenido del usuario";
-require_once('plantilla.php');
+
+require_once('require/vistas/plantillas/plantilla.php');
 
 /*echo
 "<h1>Bienvenido Usuario</h1>

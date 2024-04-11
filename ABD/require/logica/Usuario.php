@@ -1,5 +1,7 @@
 <?php
 
+//Tabla Usuario. Hecha para almacenar los datos de cada Usuario creado y logueado en nuestra página web.
+
 class Usuario {
     public const ADMIN_ROLE = 1;
     public const USER_ROLE = 0;

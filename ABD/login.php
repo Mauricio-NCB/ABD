@@ -1,20 +1,17 @@
 <?php
-echo
-"<h1>Acceso al sistema</h1>
-<form action='procesarLogin.php' method='POST'>
-	<fieldset>
-	<legend>Usuario y contraseña</legend>
-	<div>
-		<label for='nombreUsuario'>Nombre de usuario:</label>
-		<input id='nombreUsuario' type='text' name='nombreUsuario' />
-	</div>
-	<div>
-		<label for='password'>Password:</label>
-		<input id='password' type='password' name='password' />
-	</div>
-	<div>
-		<button type='submit' name='login'>Entrar</button>
-	</div>
-	</fieldset>
-</form>";
+require_once 'require/config.php';
+use abd\FormularioLogin as FormularioLogin;
+
+$tituloPagina = 'Login';
+
+$formLogin = new FormularioLogin();
+$htmlFormLogin = $formLogin->gestiona();
+
+$contenidoPrincipal=<<<EOS
+    <h1>Acceso al sistema</h1>
+    $htmlFormLogin
+EOS;
+
+require __DIR__.'/require/vistas/plantillas/plantilla.php';
+
 ?>

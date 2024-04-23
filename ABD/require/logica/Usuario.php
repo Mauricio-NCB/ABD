@@ -1,5 +1,6 @@
 <?php
 
+namespace abd;
 //Tabla Usuario. Hecha para almacenar los datos de cada Usuario creado y logueado en nuestra página web.
 
 class Usuario {
@@ -14,8 +15,42 @@ class Usuario {
     private $numTarjeta;
     private $fechaTarjeta;
     private $cvvTarjeta;
+   
+    public function getEmail()
+    {
+        return $this->correo;
+    }
 
-    private function __construct($id = null, $correo, $nombreUsuario, $contrasena, $rol = null, $numTarjeta, $fechaTarjeta, $cvvTarjeta) {
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getNumTarjeta()
+    {
+        return $this->numTarjeta;
+    }
+    public function getCvvTarjeta()
+    {
+        return $this->cvvTarjeta;
+    }
+
+    public function getFechaTarjeta()
+    {
+        return $this->fechaTarjeta;
+    }
+
+    public function getNombreUsuario()
+    {
+        return $this->nombreUsuario;
+    }
+
+    public function getRol()
+    {
+        return $this->rol;
+    }
+
+    private function __construct($id = null, $correo, $nombreUsuario, $contrasena, $rol, $numTarjeta, $fechaTarjeta, $cvvTarjeta) {
         $this->id = $id;
         $this->correo = $correo;
         $this->nombreUsuario = $nombreUsuario;
@@ -35,14 +70,14 @@ class Usuario {
 
     public static function registra($correo, $nombreUsuario, $contrasena, $rol, $numTarjeta, $fechaTarjeta, $cvvTarjeta) {
         
-        $usuario = new Usuario($correo, $nombreUsuario, self::hash($contrasena), $rol, $numTarjeta, $fechaTarjeta, $cvvTarjeta);
+        $usuario = new Usuario($correo, $nombreUsuario, self::hash($contrasena), 0, $numTarjeta, $fechaTarjeta, $cvvTarjeta);
         
         return $usuario->guarda();
     }
 
-    private static function busca($nombreUsuario) {
+    public static function busca($nombreUsuario) {
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("SELECT * FROM usuarios U WHERE U.NombreUsuario='%s'", $conn->real_escape_string($nombreUsuario));
+        $query = sprintf("SELECT * FROM usuario U WHERE U.nombreUsuario='%s'", $conn->real_escape_string($nombreUsuario));
         $result = $conn->query($query);
         $usuario = false;
         if ($result) {
@@ -60,11 +95,11 @@ class Usuario {
         return $usuario;
     }
 
-    private static function inserta($usuario) {
+    public static function inserta($usuario) {
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("INSERT INTO Usuarios(Correo, NombreUsuario, Contraseña, Rol,
-                            Número_tarjeta, Fecha_tarjeta, CVV_tarjeta) VALUES
+        $query = sprintf("INSERT INTO usuario (correo, nombreUsuario, contrasena, rol,
+                            numTarjeta, fechaTarjeta, cvvTarjeta) VALUES
                             ('%s, '%s', '%s', '%s', '%s, '%s, '%s)"
                             , $conn->real_escape_string($usuario->correo)
                             , $conn->real_escape_string($usuario->nombreUsuario)
@@ -84,6 +119,13 @@ class Usuario {
         return $result;
     }
 
+    public static function crea($email, $nombreUsuario, $password, $numTarjeta, $fechaTarjeta, $cvvTarjeta)
+    {   
+        $user = new Usuario(NULL, $email, $nombreUsuario, self::hash($password), 0, $numTarjeta, $fechaTarjeta, $cvvTarjeta);
+        $user->añadeRol($rol);
+        return $user->guarda();
+    }
+
     private static function hash($contrasena) {
         return password_hash($password, PASSWORD_DEFAULT);
     }
@@ -95,6 +137,8 @@ class Usuario {
     private function comprueba($contrasena) {
         return password_verify($contrasena, $this->contrasena);
     }
+
+
 
 }
 

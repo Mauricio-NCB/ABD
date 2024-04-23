@@ -18,11 +18,12 @@ class FormularioRegistro extends Formulario {
         $email = $datos['email'] ?? '';
         $nombreUsuario = $datos['nombreUsuario'] ?? '';
         $nombre = $datos['nombre'] ?? '';
-        $direccion = $datos['direccion'] ?? '';
-        $codPostal = $datos['codPostal'] ?? '';
+        $numtarjeta = $datos['numtarjeta'] ?? '';
+        $fechatarjeta = $datos['fechatarjeta'] ?? '';
+        $cvvtarjeta = $datos['cvvtarjeta'] ?? '';
         // Se generan los mensajes de error si existen.
         $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
-        $erroresCampos = self::generaErroresCampos(['email', 'nombreUsuario', 'nombre',  'direccion', 'codPostal', 'password', 'password2'], 
+        $erroresCampos = self::generaErroresCampos([NULL, 'email', 'nombreUsuario','password', 'password2', 0, 'numtarjeta', 'fechatarjeta', 'cvvtarjeta'],
                                                     $this->errores, 'span', array('class' => 'error'));
 
         $html = <<<EOF
@@ -40,11 +41,6 @@ class FormularioRegistro extends Formulario {
                 {$erroresCampos['nombreUsuario']}
             </div>
             <div>
-                <label for="nombre">Nombre:</label>
-                <input id="nombre" type="text" name="nombre" value="$nombre" />
-                {$erroresCampos['nombre']}
-            </div>
-            <div>
                 <label for="password">Password:</label>
                 <input id="password" type="password" name="password" />
                 {$erroresCampos['password']}
@@ -55,14 +51,19 @@ class FormularioRegistro extends Formulario {
                 {$erroresCampos['password2']}
             </div>
             <div>
-                <label for="direccion">Dirección:</label>
-                <input id="direccion" type="text" name="direccion" value="$direccion" />
-                {$erroresCampos['direccion']}
+                <label for="numtarjeta">Numero Tarejeta Bancaria:</label>
+                <input id="numtarjeta" type="text" name="numtarjeta" value="$numtarjeta" />
+                {$erroresCampos['numtarjeta']}
             </div>
             <div>
-                <label for="codPostal">Código Postal:</label>
-                <input id="codPostal" type="text" name="codPostal" value="$codPostal" />
-                {$erroresCampos['codPostal']}
+                <label for="fechatarjeta">Fecha Caducidad Tarjeta:</label>
+                <input id="fechatarjeta" type="datetime" name="fechatarjeta" value="$fechatarjeta" />
+                {$erroresCampos['fechatarjeta']}
+            </div>
+            <div>
+                <label for="cvvtarjeta">CVV Tarjeta:</label>
+                <input id="cvvtarjeta" type="text" name="cvvtarjeta" value="$cvvtarjeta" />
+                {$erroresCampos['cvvtarjeta']}
             </div>                                                                       
             <div>
                 <button type="submit" name="registro">Registrar</button>
@@ -89,12 +90,6 @@ class FormularioRegistro extends Formulario {
             $this->errores['nombreUsuario'] = 'El nombre de usuario tiene que tener una longitud de al menos 5 caracteres.';
         }
 
-        $nombre = trim($datos['nombre'] ?? '');
-        $nombre = filter_var($nombre, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        if ( ! $nombre || mb_strlen($nombre) < 5) {
-            $this->errores['nombre'] = 'El nombre tiene que tener una longitud de al menos 5 caracteres.';
-        }
-
         $password = trim($datos['password'] ?? '');
         $password = filter_var($password, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         if ( ! $password || mb_strlen($password) < 5 ) {
@@ -107,17 +102,24 @@ class FormularioRegistro extends Formulario {
             $this->errores['password2'] = 'Los passwords deben coincidir.';
         }
 
-        $direccion = trim($datos['direccion'] ?? '');
-        $direccion = filter_var($direccion, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        if ( ! $direccion || empty($direccion) ) {
-            $this->errores['direccion'] = 'La dirección no puede estar vacía.';
+        $numtarjeta = trim($datos['numtarjeta'] ?? '');
+        $numtarjeta = filter_var($numtarjeta, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        if ( ! $numtarjeta || empty($numtarjeta) ) {
+            $this->errores['numtarjeta'] = 'El numero de tarjeta no puede estar vacía.';
         }
 
-        $codPostal = trim($datos['codPostal'] ?? '');
-        $codPostal = filter_var($codPostal, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        if ( ! $codPostal || empty($codPostal) ) {
-            $this->errores['codPostal'] = 'El código portal no puede estar vacío.';
+        $fechatarjeta = trim($datos['fechatarjeta'] ?? '');
+        $fechatarjeta = filter_var($fechatarjeta, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        if ( ! $fechatarjeta || empty($fechatarjeta) ) {
+            $this->errores['fechatarjeta'] = 'La fecha de la tarjeta no puede estar vacío.';
         }
+
+        $cvvtarjeta = trim($datos['cvvtarjeta'] ?? '');
+        $cvvtarjeta = filter_var($cvvtarjeta, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        if ( ! $cvvtarjeta || empty($cvvtarjeta) ) {
+            $this->errores['cvvtarjeta'] = 'El cvv no puede estar vacía.';
+        }
+
         //var_dump($_FILES['fotoperf']['error']);
         //var_dump($_FILES['fotoperf']['name']);
         //var_dump(count($_FILES));
@@ -182,22 +184,19 @@ class FormularioRegistro extends Formulario {
 
         if (count($this->errores) === 0) {
 
-            $usuario = Usuario::buscaUsuario($nombreUsuario);
-            $imgPerfil = __DIR__."/imagenes/fotodefecto.jpg";
+            $usuario = Usuario::busca($nombreUsuario);
             if($usuario){
                 $this->errores[] = "El usuario ya existe";
             }
             else{
-                $usuario = Usuario::crea($email,$nombreUsuario,$nombre,$password,$direccion,$codPostal,$imgPerfil, Usuario::USER_ROLE);
+                $usuario = Usuario::inserta('123',$email,$nombreUsuario,$password,0,$numtarjeta,$fechatarjeta,$cvvtarjeta);
     
                 $_SESSION['login']=true;
-                $_SESSION['imgPerfil'] = $usuario->getImagen();
-                $_SESSION['codPostal'] = $usuario->getcodPostal();
+                $_SESSION['correo'] = $usuario->getEmail();
                 $_SESSION['nombreUsuario'] = $usuario->getNombreUsuario();
-                $_SESSION['nombre'] = $usuario->getNombre();
-                $_SESSION['direccion'] = $usuario->getdireccion();
-                $_SESSION['email'] = $usuario->getEmail();
-                
+                $_SESSION['numTarjeta'] = $usuario->getNumTarjeta();
+                $_SESSION['fechaTarjeta'] = $usuario->getFechaTarjeta();
+                $_SESSION['cvvTarjeta'] = $usuario->getCvvTarjeta();
             }
         }
     }

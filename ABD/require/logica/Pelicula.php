@@ -4,6 +4,8 @@
 
 class Pelicula {
 
+    //Atributos valoracion y comentarios provenientes de la tabla Valoraciones
+
     private $id;
     private $nombre;
     private $descripcion;

@@ -189,7 +189,7 @@ class FormularioRegistro extends Formulario {
                 $this->errores[] = "El usuario ya existe";
             }
             else{
-                $usuario = Usuario::inserta('123',$email,$nombreUsuario,$password,0,$numtarjeta,$fechatarjeta,$cvvtarjeta);
+                $usuario = Usuario::registra($email,$nombreUsuario,$password,Usuario::USER_ROLE, $numtarjeta,$fechatarjeta,$cvvtarjeta);
     
                 $_SESSION['login']=true;
                 $_SESSION['correo'] = $usuario->getEmail();

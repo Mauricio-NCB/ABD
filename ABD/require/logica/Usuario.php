@@ -50,7 +50,7 @@ class Usuario {
         return $this->rol;
     }
 
-    private function __construct($id = null, $correo, $nombreUsuario, $contrasena, $rol, $numTarjeta, $fechaTarjeta, $cvvTarjeta) {
+    private function __construct($id, $correo, $nombreUsuario, $contrasena, $rol, $numTarjeta, $fechaTarjeta, $cvvTarjeta) {
         $this->id = $id;
         $this->correo = $correo;
         $this->nombreUsuario = $nombreUsuario;
@@ -70,7 +70,7 @@ class Usuario {
 
     public static function registra($correo, $nombreUsuario, $contrasena, $rol, $numTarjeta, $fechaTarjeta, $cvvTarjeta) {
         
-        $usuario = new Usuario($correo, $nombreUsuario, self::hash($contrasena), 0, $numTarjeta, $fechaTarjeta, $cvvTarjeta);
+        $usuario = new Usuario(null, $correo, $nombreUsuario, self::hash($contrasena), $rol, $numTarjeta, $fechaTarjeta, $cvvTarjeta);
         
         return $usuario->guarda();
     }
@@ -100,7 +100,7 @@ class Usuario {
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("INSERT INTO usuario (correo, nombreUsuario, contrasena, rol,
                             numTarjeta, fechaTarjeta, cvvTarjeta) VALUES
-                            ('%s, '%s', '%s', '%s', '%s, '%s, '%s)"
+                            ('%s', '%s', '%s', '%s', '%s', '%s', '%s')"
                             , $conn->real_escape_string($usuario->correo)
                             , $conn->real_escape_string($usuario->nombreUsuario)
                             , $conn->real_escape_string($usuario->contrasena)
@@ -111,19 +111,13 @@ class Usuario {
                         );
         if ($conn->query($query)) {
             $usuario->id = $conn->insert_id;
+            $result = $usuario;
         }
         else {
             error_log("Error BD ({$conn->errno}): {$conn->error}");
         }
 
         return $result;
-    }
-
-    public static function crea($email, $nombreUsuario, $password, $numTarjeta, $fechaTarjeta, $cvvTarjeta)
-    {   
-        $user = new Usuario(NULL, $email, $nombreUsuario, self::hash($password), 0, $numTarjeta, $fechaTarjeta, $cvvTarjeta);
-        $user->añadeRol($rol);
-        return $user->guarda();
     }
 
     private static function hash($contrasena) {

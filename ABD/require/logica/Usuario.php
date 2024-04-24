@@ -69,9 +69,11 @@ class Usuario {
     public static function login($nombreUsuario, $contrasena) {
         
         $usuario = self::busca($nombreUsuario);
+        
         if ($usuario && $usuario->comprueba($contrasena)) {
-            return true;
+            return $usuario;
         }
+        
         return false;
     }
 

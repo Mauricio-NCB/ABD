@@ -29,9 +29,9 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `usuario` (
   `id` int(50) NOT NULL,
-  `correo` varchar(50) NOT NULL,
-  `nombreUsuario` varchar(25) NOT NULL,
-  `contrasena` varchar(50) NOT NULL,
+  `correo` varchar(255) NOT NULL,
+  `nombreUsuario` varchar(255) NOT NULL,
+  `contrasena` varchar(255) NOT NULL,
   `rol` int(1) NOT NULL,
   `numTarjeta` int(20) NOT NULL,
   `fechaTarjeta` date NOT NULL,

@@ -11,7 +11,7 @@ class FormularioRegistro extends Formulario {
     const PATHINFO_EXTENSION = 4;
 
     public function __construct() {
-      parent::__construct('formRegistro', ['enctype' => 'multipart/form-data','urlRedireccion' => 'index.php']);    
+      parent::__construct('formRegistro', ['enctype' => 'multipart/form-data','urlRedireccion' => 'indice.php']);    
     }
     protected function generaCamposFormulario(&$datos)
     {
@@ -57,7 +57,7 @@ class FormularioRegistro extends Formulario {
             </div>
             <div>
                 <label for="fechatarjeta">Fecha Caducidad Tarjeta:</label>
-                <input id="fechatarjeta" type="datetime" name="fechatarjeta" value="$fechatarjeta" />
+                <input id="fechatarjeta" type="date" name="fechatarjeta" value="$fechatarjeta" />
                 {$erroresCampos['fechatarjeta']}
             </div>
             <div>

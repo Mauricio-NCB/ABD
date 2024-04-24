@@ -8,7 +8,7 @@ use abd\Usuario as Usuario;
 class FormularioLogin extends Formulario {
 
     public function __construct() {
-        parent::__construct('formLogin', ['urlRedireccion' => 'index.php']);
+        parent::__construct('formLogin', ['urlRedireccion' => 'indice.php']);
     }
     
     protected function generaCamposFormulario(&$datos)
@@ -58,24 +58,23 @@ class FormularioLogin extends Formulario {
         $password = filter_var($password, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         if ( ! $password || empty($password) ) {
-            $this->errores['password'] = 'El password no puede estar vacío.';
+            $this->errores['password'] = 'La contraseña no puede estar vacía.';
         }
         
         if (count($this->errores) === 0) {
             $usuario = Usuario::login($nombreUsuario, $password);
         
             if (!$usuario) {
-                $this->errores[] = "El usuario o el password no coinciden";
+                $this->errores[] = "El usuario o la contraseña no coinciden";
             } else {
                 $_SESSION['login'] = true;
-                $_SESSION['nombre'] = $usuario->getNombre();
                 $_SESSION['nombreusuario'] = $usuario->getNombreUsuario();
                 $_SESSION['email'] = $usuario->getEmail();
                 $_SESSION['password'] = $usuario->getPassword(); 
-                $_SESSION['imgPerfil'] = $usuario->getImagen();
-                $_SESSION['codPostal'] = $usuario->getcodPostal();
-                $_SESSION['direccion'] = $usuario->getDireccion();
-                $_SESSION['esAdmin'] = $usuario->tieneRol(Usuario::ADMIN_ROLE);
+                $_SESSION['numTarjeta'] = $usuario->getNumTarjeta();
+                $_SESSION['fechaTarjeta'] = $usuario->getFechaTarjeta();
+                $_SESSION['cvvTarjeta'] = $usuario->getCvvTarjeta();
+                $_SESSION['esAdmin'] = $usuario->getRol();
             }
         }
     }

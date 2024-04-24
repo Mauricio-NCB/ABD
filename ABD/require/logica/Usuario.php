@@ -21,6 +21,11 @@ class Usuario {
         return $this->correo;
     }
 
+    public function getPassword()
+    {
+        return $this->contrasena;
+    }
+
     public function getId()
     {
         return $this->id;
@@ -64,8 +69,10 @@ class Usuario {
     public static function login($nombreUsuario, $contrasena) {
         
         $usuario = self::busca($nombreUsuario);
-
-        return $usuario->comprueba($contrasena);
+        if ($usuario && $usuario->comprueba($contrasena)) {
+            return true;
+        }
+        return false;
     }
 
     public static function registra($correo, $nombreUsuario, $contrasena, $rol, $numTarjeta, $fechaTarjeta, $cvvTarjeta) {
@@ -83,9 +90,9 @@ class Usuario {
         if ($result) {
             $fila = $result->fetch_assoc();
             if ($fila) {
-                $usuario = new Usuario($fila['ID'], $fila['Correo'], $fila['Nombre_usuario'], 
-                            $fila['Contraseña'], $fila['Rol'], $fila['Número_tarjeta'],
-                            $fila['Fecha_tarjeta'], $fila['CVV_tarjeta']); 
+                $usuario = new Usuario($fila['id'], $fila['correo'], $fila['nombreUsuario'], 
+                            $fila['contrasena'], $fila['rol'], $fila['numTarjeta'],
+                            $fila['fechaTarjeta'], $fila['cvvTarjeta']); 
             }
             $result->free();
         }
@@ -121,7 +128,7 @@ class Usuario {
     }
 
     private static function hash($contrasena) {
-        return password_hash($password, PASSWORD_DEFAULT);
+        return password_hash($contrasena, PASSWORD_DEFAULT);
     }
 
     private function guarda() {

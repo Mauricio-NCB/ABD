@@ -95,7 +95,7 @@ class Usuario {
         return $usuario;
     }
 
-    public static function inserta($usuario) {
+    private static function inserta($usuario) {
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("INSERT INTO usuario (correo, nombreUsuario, contrasena, rol,

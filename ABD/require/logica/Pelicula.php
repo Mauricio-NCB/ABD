@@ -31,7 +31,7 @@ class Pelicula {
         // Se almacena la nueva pelicula creada
 
         $pelicula = new Pelicula($nombre, $descripcion, $precio, $valoracion);
-        if (!$pelicula->anadir($pelicula)) {
+        if (!self::anadir($pelicula)) {
             error_log("Error de insercion: No se ha podido insertar de manera correcta la nueva pelicula");
             $result = false;
         }

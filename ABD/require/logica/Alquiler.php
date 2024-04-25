@@ -4,21 +4,17 @@
 
 class Alquiler {
 
-    private $id;
     private $idUsuario;
     private $idPelicula;
-    private $estado;
     private $fechaInicio;
     private $fechaFin;
 
-    private function __construct($id, $idUsuario, $idPelicula, $fechaInicio, $fechaFin) {
-        $this->id = $id;
+    private function __construct($idUsuario, $idPelicula, $fechaInicio, $fechaFin) {
         $this->idUsuario = $idUsuario;
         $this->idPelicula = $idPelicula;
         $this->fechaInicio = $fechaInicio;
         $this->fechaFin = $fechaFin;
     }
-
     
 }
 

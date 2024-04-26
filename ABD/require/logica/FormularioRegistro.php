@@ -7,9 +7,6 @@ use abd\Usuario as Usuario;
 
 class FormularioRegistro extends Formulario {
 
-    const EXTENSIONES_PERMITIDAS = array('jpg', 'jpe', 'jpeg', 'png');
-    const PATHINFO_EXTENSION = 4;
-
     public function __construct() {
       parent::__construct('formRegistro', ['enctype' => 'multipart/form-data','urlRedireccion' => 'indice.php']);    
     }
@@ -18,12 +15,9 @@ class FormularioRegistro extends Formulario {
         $email = $datos['email'] ?? '';
         $nombreUsuario = $datos['nombreUsuario'] ?? '';
         $nombre = $datos['nombre'] ?? '';
-        $numtarjeta = $datos['numtarjeta'] ?? '';
-        $fechatarjeta = $datos['fechatarjeta'] ?? '';
-        $cvvtarjeta = $datos['cvvtarjeta'] ?? '';
         // Se generan los mensajes de error si existen.
         $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
-        $erroresCampos = self::generaErroresCampos([NULL, 'email', 'nombreUsuario','password', 'password2', 0, 'numtarjeta', 'fechatarjeta', 'cvvtarjeta'],
+        $erroresCampos = self::generaErroresCampos([NULL, 'email', 'nombreUsuario','password', 'password2', 0],
                                                     $this->errores, 'span', array('class' => 'error'));
 
         $html = <<<EOF
@@ -49,22 +43,7 @@ class FormularioRegistro extends Formulario {
                 <label for="password2">Reintroduce el password:</label>
                 <input id="password2" type="password" name="password2" />
                 {$erroresCampos['password2']}
-            </div>
-            <div>
-                <label for="numtarjeta">Numero Tarejeta Bancaria:</label>
-                <input id="numtarjeta" type="text" name="numtarjeta" value="$numtarjeta" />
-                {$erroresCampos['numtarjeta']}
-            </div>
-            <div>
-                <label for="fechatarjeta">Fecha Caducidad Tarjeta:</label>
-                <input id="fechatarjeta" type="date" name="fechatarjeta" value="$fechatarjeta" />
-                {$erroresCampos['fechatarjeta']}
-            </div>
-            <div>
-                <label for="cvvtarjeta">CVV Tarjeta:</label>
-                <input id="cvvtarjeta" type="text" name="cvvtarjeta" value="$cvvtarjeta" />
-                {$erroresCampos['cvvtarjeta']}
-            </div>                                                                       
+            </div>                                                                    
             <div>
                 <button type="submit" name="registro">Registrar</button>
             </div>
@@ -100,24 +79,6 @@ class FormularioRegistro extends Formulario {
         $password2 = filter_var($password2, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         if ( ! $password2 || $password != $password2 ) {
             $this->errores['password2'] = 'Los passwords deben coincidir.';
-        }
-
-        $numtarjeta = trim($datos['numtarjeta'] ?? '');
-        $numtarjeta = filter_var($numtarjeta, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        if ( ! $numtarjeta || empty($numtarjeta) ) {
-            $this->errores['numtarjeta'] = 'El numero de tarjeta no puede estar vacía.';
-        }
-
-        $fechatarjeta = trim($datos['fechatarjeta'] ?? '');
-        $fechatarjeta = filter_var($fechatarjeta, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        if ( ! $fechatarjeta || empty($fechatarjeta) ) {
-            $this->errores['fechatarjeta'] = 'La fecha de la tarjeta no puede estar vacío.';
-        }
-
-        $cvvtarjeta = trim($datos['cvvtarjeta'] ?? '');
-        $cvvtarjeta = filter_var($cvvtarjeta, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        if ( ! $cvvtarjeta || empty($cvvtarjeta) ) {
-            $this->errores['cvvtarjeta'] = 'El cvv no puede estar vacía.';
         }
 
         //var_dump($_FILES['fotoperf']['error']);
@@ -189,14 +150,11 @@ class FormularioRegistro extends Formulario {
                 $this->errores[] = "El usuario ya existe";
             }
             else{
-                $usuario = Usuario::registra($email,$nombreUsuario,$password,Usuario::USER_ROLE, $numtarjeta,$fechatarjeta,$cvvtarjeta);
+                $usuario = Usuario::registra($email,$nombreUsuario,$password,Usuario::USER_ROLE);
     
                 $_SESSION['login']=true;
                 $_SESSION['correo'] = $usuario->getEmail();
                 $_SESSION['nombreUsuario'] = $usuario->getNombreUsuario();
-                $_SESSION['numTarjeta'] = $usuario->getNumTarjeta();
-                $_SESSION['fechaTarjeta'] = $usuario->getFechaTarjeta();
-                $_SESSION['cvvTarjeta'] = $usuario->getCvvTarjeta();
             }
         }
     }

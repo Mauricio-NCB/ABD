@@ -71,9 +71,6 @@ class FormularioLogin extends Formulario {
                 $_SESSION['nombreusuario'] = $usuario->getNombreUsuario();
                 $_SESSION['email'] = $usuario->getEmail();
                 $_SESSION['password'] = $usuario->getPassword(); 
-                $_SESSION['numTarjeta'] = $usuario->getNumTarjeta();
-                $_SESSION['fechaTarjeta'] = $usuario->getFechaTarjeta();
-                $_SESSION['cvvTarjeta'] = $usuario->getCvvTarjeta();
                 $_SESSION['esAdmin'] = $usuario->getRol();
             }
         }

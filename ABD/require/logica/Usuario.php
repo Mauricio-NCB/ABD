@@ -12,9 +12,6 @@ class Usuario {
     private $nombreUsuario;
     private $contrasena;
     private $rol;
-    private $numTarjeta;
-    private $fechaTarjeta;
-    private $cvvTarjeta;
    
     public function getEmail()
     {
@@ -31,20 +28,6 @@ class Usuario {
         return $this->id;
     }
 
-    public function getNumTarjeta()
-    {
-        return $this->numTarjeta;
-    }
-    public function getCvvTarjeta()
-    {
-        return $this->cvvTarjeta;
-    }
-
-    public function getFechaTarjeta()
-    {
-        return $this->fechaTarjeta;
-    }
-
     public function getNombreUsuario()
     {
         return $this->nombreUsuario;
@@ -55,15 +38,12 @@ class Usuario {
         return $this->rol;
     }
 
-    private function __construct($id, $correo, $nombreUsuario, $contrasena, $rol, $numTarjeta, $fechaTarjeta, $cvvTarjeta) {
+    private function __construct($id, $correo, $nombreUsuario, $contrasena, $rol) {
         $this->id = $id;
         $this->correo = $correo;
         $this->nombreUsuario = $nombreUsuario;
         $this->contrasena = $contrasena;
         $this->rol = $rol;
-        $this->numTarjeta = $numTarjeta;
-        $this->fechaTarjeta = $fechaTarjeta;
-        $this->cvvTarjeta = $cvvTarjeta;
     }
 
     public static function login($nombreUsuario, $contrasena) {
@@ -77,9 +57,9 @@ class Usuario {
         return false;
     }
 
-    public static function registra($correo, $nombreUsuario, $contrasena, $rol, $numTarjeta, $fechaTarjeta, $cvvTarjeta) {
+    public static function registra($correo, $nombreUsuario, $contrasena, $rol) {
         
-        $usuario = new Usuario(null, $correo, $nombreUsuario, self::hash($contrasena), $rol, $numTarjeta, $fechaTarjeta, $cvvTarjeta);
+        $usuario = new Usuario(null, $correo, $nombreUsuario, self::hash($contrasena), $rol);
         
         return $usuario->guarda();
     }
@@ -93,8 +73,27 @@ class Usuario {
             $fila = $result->fetch_assoc();
             if ($fila) {
                 $usuario = new Usuario($fila['id'], $fila['correo'], $fila['nombreUsuario'], 
-                            $fila['contrasena'], $fila['rol'], $fila['numTarjeta'],
-                            $fila['fechaTarjeta'], $fila['cvvTarjeta']); 
+                            $fila['contrasena'], $fila['rol']); 
+            }
+            $result->free();
+        }
+        else {
+            error_log("Error BD ({$conn->errno}): $conn->error");
+        }
+        return $usuario;
+    }
+
+
+    public static function buscaPorCorreo($correo) {
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT * FROM usuario U WHERE U.correo='%s'", $conn->real_escape_string($correo));
+        $result = $conn->query($query);
+        $usuario = false;
+        if ($result) {
+            $fila = $result->fetch_assoc();
+            if ($fila) {
+                $usuario = new Usuario($fila['id'], $fila['correo'], $fila['nombreUsuario'], 
+                            $fila['contrasena'], $fila['rol']); 
             }
             $result->free();
         }
@@ -107,16 +106,12 @@ class Usuario {
     private static function inserta($usuario) {
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("INSERT INTO usuario (correo, nombreUsuario, contrasena, rol,
-                            numTarjeta, fechaTarjeta, cvvTarjeta) VALUES
-                            ('%s', '%s', '%s', '%s', '%s', '%s', '%s')"
+        $query = sprintf("INSERT INTO usuario (correo, nombreUsuario, contrasena, rol) VALUES
+                            ('%s', '%s', '%s', '%s')"
                             , $conn->real_escape_string($usuario->correo)
                             , $conn->real_escape_string($usuario->nombreUsuario)
                             , $conn->real_escape_string($usuario->contrasena)
                             , $conn->real_escape_string($usuario->rol)
-                            , $conn->real_escape_string($usuario->numTarjeta)
-                            , $conn->real_escape_string($usuario->fechaTarjeta)
-                            , $conn->real_escape_string($usuario->cvvTarjeta)
                         );
         if ($conn->query($query)) {
             $usuario->id = $conn->insert_id;
@@ -141,8 +136,21 @@ class Usuario {
         return password_verify($contrasena, $this->contrasena);
     }
 
-
-
+    public static function registraTarjeta($numtarjeta,$fechatarjeta,$cvvtarjeta){
+        $result = false;
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $usuario = self::busca($_SESSION['nombreusuario']);
+        $query = sprintf("INSERT INTO tarjeta (idUsuario, numeroTarjeta, fechaTarjeta, cvvTarjeta) VALUES
+                            ('%s', '%s', '%s', '%s')"
+                            , $conn->real_escape_string($usuario->id)
+                            , $conn->real_escape_string($numtarjeta)
+                            , $conn->real_escape_string($fechatarjeta)
+                            , $conn->real_escape_string($cvvtarjeta)
+                        );
+        if (!$conn->query($query)) {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+    }
 }
 
 ?>

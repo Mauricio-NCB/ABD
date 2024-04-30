@@ -54,8 +54,16 @@ class FormularioAñadirTarjeta extends Formulario {
 
         $numtarjeta = trim($datos['numtarjeta'] ?? '');
         $numtarjeta = filter_var($numtarjeta, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $numtarlong = strlen((string)$numtarjeta);
+
         if ( ! $numtarjeta || empty($numtarjeta) ) {
-            $this->errores['numtarjeta'] = 'El numero de tarjeta no puede estar vacía.';
+            $this->errores['numtarjeta'] = 'El numero de tarjeta no puede estar vacío y tiene que ser 16 números.';
+        }
+        else if(!is_numeric($numtarjeta)){
+            $this->errores['numtarjeta'] = 'El número de la tarjeta tiene que ser numérico';
+        }
+        else if($numtarlong != 16){
+            $this->errores['numtarjeta'] = 'El numero de la tarjeta tiene que tener 16 números.';
         }
 
         $fechatarjeta = trim($datos['fechatarjeta'] ?? '');
@@ -66,8 +74,15 @@ class FormularioAñadirTarjeta extends Formulario {
 
         $cvvtarjeta = trim($datos['cvvtarjeta'] ?? '');
         $cvvtarjeta = filter_var($cvvtarjeta, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $cvvtarlong = strlen((string)$cvvtarjeta);
         if ( ! $cvvtarjeta || empty($cvvtarjeta) ) {
-            $this->errores['cvvtarjeta'] = 'El cvv no puede estar vacía.';
+            $this->errores['cvvtarjeta'] = 'El cvv no puede estar vacía y tener 3 números.';
+        }
+        else if(!is_numeric($cvvtarjeta)){
+            $this->errores['cvvtarjeta'] = 'El cvv tiene que ser numérico';
+        }
+        else if($cvvtarlong != 3){
+            $this->errores['cvvtarjeta'] = 'El cvv tiene que tener 3 números.';
         }
 
         if (count($this->errores) === 0) {
@@ -75,9 +90,11 @@ class FormularioAñadirTarjeta extends Formulario {
             if(!$usuario){
                 $this->errores[] = "No se puede añadir un metodo de pago a un usuario no existente";
             }
+            else if(Usuario::buscaTarjeta($numtarjeta,$usuario->getId())){
+                $this->errores[] = "El usuario ya tiene esa tarjeta registrada";
+            }
             else{
                 $usuario = Usuario::registraTarjeta($numtarjeta,$fechatarjeta,$cvvtarjeta);
-                $_SESSION['metodoPago']=true;
             }
         }
     }

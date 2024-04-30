@@ -83,6 +83,16 @@ class Usuario {
         return $usuario;
     }
 
+    public static function buscaTarjeta($tarjeta, $idU) {
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT * FROM tarjeta T WHERE T.numeroTarjeta='%s' AND T.idUsuario = '%s'" , $conn->real_escape_string($tarjeta), $conn->real_escape_string($idU));
+        $result = $conn->query($query);
+        if ($result->num_rows > 0) {
+            return true;
+        }
+        return false;
+    }
+
 
     public static function buscaPorCorreo($correo) {
         $conn = Aplicacion::getInstance()->getConexionBd();

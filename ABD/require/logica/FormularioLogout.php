@@ -6,7 +6,7 @@ use abd\Formulario;
 class FormularioLogout extends Formulario {
 
     public function __construct() {
-        parent::__construct('formLogout', ['action' => 'logout.php', 'urlRedireccion' => 'index.php']);
+        parent::__construct('formLogout', ['action' => 'logout.php', 'urlRedireccion' => 'indice.php']);
     }
 
     protected function generaCamposFormulario(&$datos)

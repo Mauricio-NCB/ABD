@@ -6,13 +6,13 @@ $tituloPagina="Página de usuario";
 $contenidoPrincipal="<h1>Bienvenido Usuario</h1>
 <a href='registro.php'>Registro</a><br>
 <a href='login.php'>Login</a><br>";
-if(isset($_SESSION['login']) && $_SESSION['login'] && !isset($_SESSION['metodoPago'])){
+if(isset($_SESSION['login']) && $_SESSION['login']){
     $contenidoPrincipal.="
-    <a href='tarjeta.php'>Tarjeta</a>";
+    <a href='tarjeta.php'>Tarjeta</a><br>";
 }
-if(isset($_SESSION['metodoPago'])){
+if(isset($_SESSION['login']) && $_SESSION['login']){
     $contenidoPrincipal.="
-    Ya tienes la tarjeta incluida.";
+    <a href ='logout.php'>Cerrar Sesión.</a>";
 }
 
 require_once('require/vistas/plantillas/plantilla.php');

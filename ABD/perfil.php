@@ -12,7 +12,15 @@ if(isset($_SESSION['login']) && $_SESSION['login']){
 }
 if(isset($_SESSION['login']) && $_SESSION['login']){
     $contenidoPrincipal.="
-    <a href ='logout.php'>Cerrar Sesión.</a>";
+    <a href ='logout.php'>Cerrar Sesión</a><br>";
+}
+if(isset($_SESSION['esAdmin']) && $_SESSION['esAdmin']){
+    $contenidoPrincipal.="
+    <a href ='administracion.php'>Eres Administrador</a>";
+}
+else{
+    $contenidoPrincipal.="
+    Bienvenido Usuario";
 }
 
 require_once('require/vistas/plantillas/plantilla.php');

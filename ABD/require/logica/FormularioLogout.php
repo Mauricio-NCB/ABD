@@ -27,9 +27,6 @@ class FormularioLogout extends Formulario {
         unset($_SESSION['nombreUsuario']);
         unset($_SESSION['email']);
         unset($_SESSION['password']);
-        unset($_SESSION['imgPerfil']);
-        unset($_SESSION['codPostal']);
-        unset($_SESSION['direccion']);
         unset($_SESSION['esAdmin']);
         session_destroy();
     }

@@ -83,6 +83,26 @@ class Usuario {
         return $usuario;
     }
 
+    public static function listaUsuarios() {
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT * FROM usuario U ");
+        $rs = $conn->query($query);
+        $result = [];
+        $i = 0;
+        if ($rs) {
+            foreach ($rs as $fila) {  
+                $result[$i] = new Usuario($fila['id'], $fila['correo'], $fila['nombreUsuario'], 
+                            $fila['contrasena'], $fila['rol']); 
+                $i++;
+            }
+            $rs->free();
+        }
+        else {
+            error_log("Error BD ({$conn->errno}): $conn->error");
+        }
+        return $result;
+    }
+
     public static function buscaTarjeta($tarjeta, $idU) {
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("SELECT * FROM tarjeta T WHERE T.numeroTarjeta='%s' AND T.idUsuario = '%s'" , $conn->real_escape_string($tarjeta), $conn->real_escape_string($idU));
@@ -91,6 +111,17 @@ class Usuario {
             return true;
         }
         return false;
+    }
+
+    public static function darAdmin($correoUser) {
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $correoUsuario = $conn->real_escape_string($correoUser);
+        $query = sprintf("UPDATE usuario SET rol = '1' WHERE correo='$correoUsuario'");
+        if ( !$conn->query($query) ) {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+            return false;
+        }
+        return true;
     }
 
 

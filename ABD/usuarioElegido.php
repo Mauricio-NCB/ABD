@@ -1,9 +1,9 @@
 <?php
 require_once __DIR__."/require/config.php";
 
-use abd\FormularioModificarUsuario as FormularioModificarUsuario;
+use abd\FormularioDarAdmin as FormularioDarAdmin;
 
-$tituloPagina = 'Gestión de usuarios';
+$tituloPagina = 'Dar administrador';
 
 $contenidoPrincipal = '';
 
@@ -11,8 +11,8 @@ if (! isset($_SESSION['esAdmin']) || !$_SESSION['esAdmin']) {
 	header("Location:indice.php");
 }
 else {
-	$formModUsuario = new FormularioModificarUsuario();
-	$htmlForm = $formModUsuario->gestiona();
+	$formDarAdmin = new FormularioDarAdmin();
+	$htmlForm = $formDarAdmin->gestiona();
 
     $contenidoPrincipal = <<<EOS
 	<h1>Gestión de usuarios</h1>

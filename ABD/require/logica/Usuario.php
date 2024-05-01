@@ -192,6 +192,25 @@ class Usuario {
             error_log("Error BD ({$conn->errno}): {$conn->error}");
         }
     }
+
+    public static function editarDatos($email_usuario, $nombreUsuario,$password,$rol){
+        
+        $result = false;
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $pass = self::hash($password);
+        $query=sprintf("UPDATE usuario SET nombreUsuario = '$nombreUsuario', contrasena='$pass', rol ='$rol' 
+            WHERE correo= '$email_usuario'");
+
+            $rs = $conn->query($query);
+        if ($rs) {
+            $result = true;
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        
+        return $result;
+
+    }
 }
 
 ?>

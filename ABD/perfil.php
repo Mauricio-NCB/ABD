@@ -12,6 +12,7 @@ if(isset($_SESSION['login']) && $_SESSION['login']){
 }
 if(isset($_SESSION['login']) && $_SESSION['login']){
     $contenidoPrincipal.="
+    <a href= 'editaPerfil.php'>Edita tu perfil</a><br>
     <a href ='logout.php'>Cerrar Sesión</a><br>";
 }
 if(isset($_SESSION['esAdmin']) && $_SESSION['esAdmin']){

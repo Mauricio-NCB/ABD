@@ -1,6 +1,6 @@
 <?php
-
-use Aplicacion;
+namespace abd;
+use abd\Aplicacion as Aplicacion;
 
 //Tabla Pelicula. Hecha para almacenar los datos de cada pelicula que se va a alquilar
 
@@ -80,9 +80,64 @@ class Pelicula {
         return $pelicula;
     }
 
-    static function mostrarCartelera() {
-        $pelicula = self::filtrarPelicula();
-        return $pelicula;
+    static function mostrarCatalogo() {
+        
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT * FROM pelicula");
+        $result = $conn->query($query);
+        
+        $catalogo = [];
+        $i = 0;
+
+        if($result) {
+
+            foreach($result as $fila) {
+
+                $valoracion = obtenerValoracion($fila['id']);
+                $comentarios = obtenerComentarios($fila['id']);
+                $catalogo[$i] = new Pelicula($fila['id'], $fila['nombre'], $fila['descripcion'], $fila['precio'], $fila['valoracion'], $fila['comentario']);
+            }
+
+            $result->free();         
+        }
+
+        return $catalogo;
+
+    }
+
+    static function obtenerValoracion($idPelicula) {
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = "SELECT AVG(puntuacion) FROM valoracion V WHERE V.idPelicula= '$idPelicula'";
+        $result = $conn->query($query);
+        
+        if ($result) {
+            return $result;
+        }
+        
+        return null;
+    }
+
+    static function obtenerComentarios($idPelicula) {
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = "SELECT comentario FROM valoracion V WHERE V.idPelicula= '$idPelicula'";
+        $result = $conn->query($query);
+        $comentarios = [];
+        $i = 0;
+
+        if ($result) {
+            foreach($result as $fila) {
+                $comentarios[$i] = $fila;
+                $i++;
+            }
+            $result->free();
+
+            return $comentarios;
+        }
+        else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+
+            return null;
+        }
     }
 
 }

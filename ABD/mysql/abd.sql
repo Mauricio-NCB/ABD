@@ -7,6 +7,14 @@
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
+use abd;
+
+DROP TABLE IF EXISTS `alquiler`;
+DROP TABLE IF EXISTS `pelicula`;
+DROP TABLE IF EXISTS `tarjeta`;
+DROP TABLE IF EXISTS `usuario`;
+DROP TABLE IF EXISTS `valoracion`;
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -27,7 +35,7 @@ SET time_zone = "+00:00";
 -- Estructura de tabla para la tabla `alquiler`
 --
 
-CREATE TABLE `alquiler` (
+CREATE TABLE IF NOT EXISTS `alquiler` (
   `id` int(11) NOT NULL,
   `idUsuario` int(11) NOT NULL,
   `idPelicula` int(11) NOT NULL,
@@ -41,7 +49,7 @@ CREATE TABLE `alquiler` (
 -- Estructura de tabla para la tabla `pelicula`
 --
 
-CREATE TABLE `pelicula` (
+CREATE TABLE IF NOT EXISTS `pelicula` (
   `id` int(11) NOT NULL,
   `nombre` varchar(255) NOT NULL,
   `descripcion` varchar(255) NOT NULL,
@@ -54,7 +62,7 @@ CREATE TABLE `pelicula` (
 -- Estructura de tabla para la tabla `tarjeta`
 --
 
-CREATE TABLE `tarjeta` (
+CREATE TABLE IF NOT EXISTS `tarjeta` (
   `id` int(11) NOT NULL,
   `idUsuario` int(11) NOT NULL,
   `numeroTarjeta` int(16) NOT NULL,
@@ -68,7 +76,7 @@ CREATE TABLE `tarjeta` (
 -- Estructura de tabla para la tabla `usuario`
 --
 
-CREATE TABLE `usuario` (
+CREATE TABLE IF NOT EXISTS `usuario` (
   `id` int(11) NOT NULL,
   `correo` varchar(255) NOT NULL,
   `nombreUsuario` varchar(255) NOT NULL,
@@ -82,7 +90,7 @@ CREATE TABLE `usuario` (
 -- Estructura de tabla para la tabla `valoracion`
 --
 
-CREATE TABLE `valoracion` (
+CREATE TABLE IF NOT EXISTS `valoracion` (
   `id` int(11) NOT NULL,
   `idUsuario` int(11) NOT NULL,
   `idPelicula` int(11) NOT NULL,

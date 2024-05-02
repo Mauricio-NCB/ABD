@@ -13,7 +13,7 @@
             echo "<p> Bienvenido {$_SESSION['nombreusuario']} $htmlForm";
 
             echo("
-                <form action='perfil.php'>
+                <form action='editaPerfil.php'>
                     <button type='submit'>Editar perfil</button>
                 </form>
             ");

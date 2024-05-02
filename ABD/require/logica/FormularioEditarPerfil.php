@@ -50,11 +50,6 @@ class FormularioEditarPerfil extends Formulario {
             </div> 
 
             <div>
-            <p>
-                <label for="esAdmin"> Rol (1 Admin, 0 Usuario) </label>
-                <input id="esAdmin" type="text" name="esAdmin"  placeholder='$esAdmin' readonly/> </p>
-                {$erroresCampos['esAdmin']}
-            </div>
             <div>
                 <button type="submit" name="editar">Editar</button>
             </div>
@@ -80,14 +75,6 @@ class FormularioEditarPerfil extends Formulario {
         }
       
         $password_nueva = trim($datos['password_nueva'] ?? '');
-       
-
-        $esAdmin = trim($datos['esAdmin'] ?? '');
-        $esAdmin = filter_var($esAdmin, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
-        if (!$esAdmin || empty($esAdmin) ) {
-           $esAdmin = $_SESSION['esAdmin'];
-        }
 
         /*
         if (!is_uploaded_file($datos['imgPerfil']['tmp-name'])){

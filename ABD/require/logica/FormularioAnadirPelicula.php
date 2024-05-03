@@ -8,7 +8,7 @@ use abd\Pelicula as Pelicula;
 class FormularioAnadirPelicula extends Formulario {
 
     public function __construct() {
-        parent::__construct('formAnadirPelicula', ['urlredireccion'=>'administracion.php']);
+        parent::__construct('formAnadirPelicula', ['urlRedireccion'=>'administracion.php']);
     }
 
     protected function generaCamposFormulario(&$datos){

@@ -66,9 +66,7 @@ class Pelicula {
         if ($rs) {
             $fila = $rs->fetch_assoc();
             if ($fila) {
-                $result = new Ropa($fila['Nombre'], $fila['Stock'], 
-                $fila['Color'], $fila['Categoria'], $fila['Talla'], 
-                $fila['Descripcion'], $fila['Precio'], $fila ['Imagen']);
+                $result = new Pelicula($fila['id'], $fila['nombre'], $fila['descripcion'], $fila['precio']);
             }
             $rs->free();
         } else {

@@ -1,14 +1,13 @@
 <?php
 namespace abd;
 
-use abd\Aplicacion as Aplicacion;
 use abd\Formulario as Formulario;
 use abd\Pelicula as Pelicula;
 
-class FormularioEliminarPelicula extends Formulario{
+class FormularioSeleccionarPelicula extends Formulario {
 
-    public function __construct(){
-        parent::__construct('formEliminarPelicula', ['urlRedireccion'=>'administracion.php']);
+    public function __construct() {
+        parent::__construct('formSelPelicula');
     }
 
     protected function generaCamposFormulario(&$datos){
@@ -30,23 +29,26 @@ class FormularioEliminarPelicula extends Formulario{
         $html = <<<EOF
         $htmlErroresGlobales
         <fieldset>
-            <legend>Elige la película que quieras eliminar: </legend>
+            <legend>Elige la película que quieres modificar: </legend>
             <div>
-                <label for="nombre">Nombre de la película que quieres eliminar</label>
-                <select id="nombre" name="nombre">
+                <label for="peliculaElegida">Nombre de la película que quieres modificar</label>
+                <select id="peliculaElegida" name="peliculaElegida">
                 $options
                 </select>
             </div>
             <div>
-                <button type="submit" name="eliminar">Eliminar</button>
+                <button type="submit" name="modificar">Modificar</button>
             </div>
         </fieldset>
         EOF;
 
         return $html;
     }
-    protected function procesaFormulario(&$datos) {
 
-        Pelicula::eliminarPelicula($datos['nombre']);
+    protected function procesaFormulario(&$datos) {
+        $peliculaElegida = Pelicula::busca($datos['peliculaElegida']);
+        $nombrePelicula = $peliculaElegida->getNombre();
+
+        header("Location: peliculaElegida.php?nombrepelicula=$nombrePelicula");
     }
 }

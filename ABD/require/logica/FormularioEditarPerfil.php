@@ -58,11 +58,6 @@ class FormularioEditarPerfil extends Formulario {
         return $html;
     }
 
-    /*
-     
-        */
-
-
     protected function procesaFormulario(&$datos)
     {
         $this->errores = [];
@@ -76,25 +71,6 @@ class FormularioEditarPerfil extends Formulario {
       
         $password_nueva = trim($datos['password_nueva'] ?? '');
 
-        /*
-        if (!is_uploaded_file($datos['imgPerfil']['tmp-name'])){
-            $this->errores['imgPerfil'] = "El fichero de imagen no se ha subido correctamente";
-        }
-        $imgPerfil = $datos['imgPerfil']['tmp_name'];
-        $destination = __DIR__.'imagenes/'.$datos['imgPerfil']['nombre'];
-        if (is_file($destination)){
-            $this->errores['imgPerfil'] = "Ya existe la foto de perfil, prueba con otra";
-            unlink(ini_get('upload_tm_dir').$datos['imgPerfil']['tmp_name']);
-            exit;
-        }
-        if (!move_uploaded_file($imgPerfil, $destination)){
-            $this->errores['imgPerfil'] = "No se ha podido mover la imagen a la carpeta de de destino";
-            unlink(ini_get('upload_tm_dir').$datos['imgPerfil']['tmp_name']);
-            exit;
-        }
-        */
-
-        
         if (count($this->errores) === 0) {
             $usuario = Usuario::editarDatos($_SESSION['email'], $nombreUsuario, $password_nueva,$esAdmin);
         
@@ -105,7 +81,6 @@ class FormularioEditarPerfil extends Formulario {
                 $_SESSION['nombreusuario'] = $nombreUsuario;
                 $_SESSION['esAdmin'] = $esAdmin;
                 $_SESSION['password'] = $password_nueva; 
-                //$_SESSION['imgPerfil'] = $imgPerfil; 
             }
         }
     }

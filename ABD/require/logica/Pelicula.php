@@ -24,6 +24,27 @@ class Pelicula {
         $this->comentarios = $comentarios;
     }
 
+    public static function busca($nombrePelicula) {
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT * FROM pelicula P WHERE P.nombre='%s'", $conn->real_escape_string($nombrePelicula));
+        $result = $conn->query($query);
+        $pelicula = false;
+        if ($result) {
+            $fila = $result->fetch_assoc();
+            if ($fila) {
+                $valoracion = Pelicula::obtenerValoracion($fila['id']);
+                $comentarios = Pelicula::obtenerComentarios($fila['id']);
+                $pelicula = new Pelicula($fila['id'], $fila['nombre'], $fila['descripcion'], 
+                            $fila['precio'], $valoracion, $comentarios); 
+            }
+            $result->free();
+        }
+        else {
+            error_log("Error BD ({$conn->errno}): $conn->error");
+        }
+        return $pelicula;
+    }
+
     public static function anadirPelicula($nombre, $descripcion, $precio) {
         
         $result = true;

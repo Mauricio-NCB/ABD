@@ -1,8 +1,8 @@
 <?php
 require_once 'require/config.php';
-use abd\FormularioAnadirPelicula as FormularioAnadirPelicula;
+use abd\FormularioEliminarPelicula as FormularioEliminarPelicula;
 
-$tituloPagina = 'Añadir película';
+$tituloPagina = 'Eliminar película';
 
 $contenidoPrincipal = '';
 
@@ -10,11 +10,11 @@ if (! isset($_SESSION['esAdmin']) || !$_SESSION['esAdmin']) {
 	header("Location:indice.php");
 }
 else {
-    $formAdd = new FormularioAnadirPelicula();
-    $htmlForm = $formAdd->gestiona();
+    $formDel = new FormularioEliminarPelicula();
+    $htmlForm = $formDel->gestiona();
 
     $contenidoPrincipal=<<<EOS
-        <h1>Añadir películas</h1>
+        <h1>Eliminar películas</h1>
         $htmlForm
     EOS;
 

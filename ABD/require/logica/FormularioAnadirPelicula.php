@@ -43,6 +43,7 @@ class FormularioAnadirPelicula extends Formulario {
             </div>
             <button type="submit" name="añadirPelicula">Añadir</button>
         EOF;
+        
         return $html;
     }
     protected function procesaFormulario(&$datos)

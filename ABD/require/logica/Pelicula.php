@@ -76,13 +76,13 @@ class Pelicula {
     }
 
     public static function eliminarPelicula($nombre) {
-        return $result = self::eliminar($nombre);
+        return self::eliminar($nombre);
     }
 
     private static function eliminar($nombre) {
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("DELETE * FROM pelicula P WHERE P.nombre = $nombre");
+        $query = sprintf("DELETE FROM pelicula WHERE nombre = '%s'", $conn->real_escape_string($nombre));
         if ($conn->query($query)) {
             $result = true;
         }

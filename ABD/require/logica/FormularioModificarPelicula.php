@@ -88,17 +88,10 @@ class FormularioModificarPelicula extends Formulario {
 
         if (count($this->errores) === 0) {
             //Falta esto mas la correccion
-
-            $pelicula = Pelicula::editarPelicula($_SESSION['email'], $nombreUsuario, $password_nueva,$esAdmin);
-        
-            if (!$usuario) {
-                $this->errores[] = "Error al editar los datos";
-            } else {
-                $_SESSION['email'] = $correo;
-                $_SESSION['nombreusuario'] = $nombreUsuario;
-                $_SESSION['esAdmin'] = $esAdmin;
-                $_SESSION['password'] = $password_nueva; 
-            }
+            $pelicula = Pelicula::busca($_REQUEST['nombrepelicula']);
+            $peli = Pelicula::busca($pelicula->getNombre());
+            $id = $peli->getId();
+            $pelicula = Pelicula::editarPelicula($id,$nombre, $descripcion ,$precio);
         }
     }
 }

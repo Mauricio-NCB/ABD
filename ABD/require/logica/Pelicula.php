@@ -177,6 +177,20 @@ class Pelicula {
         }
     }
 
+    public static function editarPelicula($id, $nombre, $des, $precio){
+
+        $result = false;
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query=sprintf("UPDATE pelicula SET nombre = '$nombre', descripcion='$des', precio ='$precio'  WHERE id = '$id'");
+        $rs = $conn->query($query);
+        if ($rs) {
+            $result = true;
+        } else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $result;
+    }
+
     public function getId() {
         return $this->id;
     }

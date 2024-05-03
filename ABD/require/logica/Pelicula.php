@@ -106,15 +106,14 @@ class Pelicula {
         $result = $conn->query($query);
         
         $catalogo = [];
-        $i = 0;
 
         if($result) {
 
             foreach($result as $fila) {
 
-                $valoracion = obtenerValoracion($fila['id']);
-                $comentarios = obtenerComentarios($fila['id']);
-                $catalogo[$i] = new Pelicula($fila['id'], $fila['nombre'], $fila['descripcion'], $fila['precio'], $fila['valoracion'], $fila['comentario']);
+                $valoracion = Pelicula::obtenerValoracion($fila['id']);
+                $comentarios = Pelicula::obtenerComentarios($fila['id']);
+                $catalogo[] = new Pelicula($fila['id'], $fila['nombre'], $fila['descripcion'], $fila['precio'], $valoracion, $comentarios);
             }
 
             $result->free();         
@@ -126,11 +125,11 @@ class Pelicula {
 
     static function obtenerValoracion($idPelicula) {
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "SELECT AVG(puntuacion) FROM valoracion V WHERE V.idPelicula= '$idPelicula'";
-        $result = $conn->query($query);
+        $query = "SELECT AVG(puntuacion) AS valoracion FROM valoracion V WHERE V.idPelicula= '$idPelicula'";
+        $result = $conn->query($query)->fetch_assoc();
         
         if ($result) {
-            return $result;
+            return $result['valoracion'];
         }
         
         return null;
@@ -159,6 +158,29 @@ class Pelicula {
         }
     }
 
+    public function getId() {
+        return $this->id;
+    }
+
+    public function getNombre() {
+        return $this->nombre;
+    }
+
+    public function getDescripcion() {
+        return $this->descripcion;
+    }
+
+    public function getPrecio() {
+        return $this->precio;
+    }
+
+    public function getValoracion() {
+        return $this->valoracion;
+    }
+
+    public function getComentarios() {
+        return $this->comentarios;
+    }
 }
 
 ?>

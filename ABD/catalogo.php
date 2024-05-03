@@ -9,21 +9,22 @@ $peliculas = Pelicula::mostrarCatalogo();
 $htmlCatalogo = "";
 
 if ($peliculas != null) {
-    foreach($peliculas as $i){
-        $id = $i["id"];
-        $nombre = $i["nombre"]; 
-        $descripcion = $i["descripcion"];
-        $precio = $i["precio"];
+    foreach($peliculas as $pelicula){
+        $id = $pelicula->getId();
+        $nombre = $pelicula->getNombre(); 
+        $descripcion = $pelicula->getDescripcion(); 
+        $precio = $pelicula->getPrecio(); 
+        $valoracion = $pelicula->getValoracion(); 
+        echo $pelicula->getValoracion();
 
         $htmlCatalogo .= <<<EOF
         <a href="producto.php?id=$id">
         <div class="producto">
-            <img alt=$descripcion>
             <h4>$nombre</h4>
             <p>$descripcion</p>
             <p>$precio €</p>   
         </div>
-         </a>
+        </a>
         EOF;
     }
 }

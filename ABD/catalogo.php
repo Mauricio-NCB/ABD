@@ -15,14 +15,14 @@ if ($peliculas != null) {
         $descripcion = $pelicula->getDescripcion(); 
         $precio = $pelicula->getPrecio(); 
         $valoracion = $pelicula->getValoracion(); 
-        echo $pelicula->getValoracion();
 
         $htmlCatalogo .= <<<EOF
         <a href="producto.php?id=$id">
         <div class="producto">
             <h4>$nombre</h4>
             <p>$descripcion</p>
-            <p>$precio €</p>   
+            <p>$precio €</p>
+            <p>$valoracion</p>   
         </div>
         </a>
         EOF;

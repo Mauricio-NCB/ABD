@@ -38,7 +38,7 @@ $contenidoPrincipal=<<<EOS
 <div class="contenedor">
      <div class="catalogo">
      $htmlCatalogo
-     </div>      
+     </div>
 </div>
 
 EOS;

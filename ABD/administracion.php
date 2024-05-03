@@ -15,6 +15,9 @@ else {
 	<form action='gestionUsuarios.php'>
 		<button type='submit' name="submit" id="submit">Gestión de usuarios</button>
 	</form>
+	<form action='gestionPeliculas.php'>
+		<button type='submit' name="submit" id="submit">Gestión de películas</button>
+	</form>
 	EOS;
 }
 

@@ -15,7 +15,7 @@ class Pelicula {
     private $valoracion;
     private $comentarios;
 
-    private function __construct ($id = null, $nombre, $descripcion, $precio, $valoracion = null, $comentarios = []) {
+    private function __construct ($id, $nombre, $descripcion, $precio, $valoracion = null, $comentarios = []) {
         $this->id = $id;
         $this->nombre = $nombre;
         $this->descripcion = $descripcion;
@@ -30,7 +30,7 @@ class Pelicula {
 
         // Se almacena la nueva pelicula creada
 
-        $pelicula = new Pelicula($nombre, $descripcion, $precio);
+        $pelicula = new Pelicula(null, $nombre, $descripcion, $precio);
         if (!self::anadir($pelicula)) {
             error_log("Error de insercion: No se ha podido insertar de manera correcta la nueva pelicula");
             $result = false;
@@ -42,8 +42,8 @@ class Pelicula {
     private static function anadir($pelicula) {
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("INSERT INTO pelicula(id, nombre, descripcion, precio)
-                        VALUES ('%s', '%s', '%s', '%s')"
+        $query = sprintf("INSERT INTO pelicula(nombre, descripcion, precio)
+                        VALUES ('%s', '%s', '%s')"
                     , $conn->real_escape_string($pelicula->nombre)
                     , $conn->real_escape_string($pelicula->descripcion)
                     , $conn->real_escape_string($pelicula->precio));
@@ -53,6 +53,25 @@ class Pelicula {
             $result = true;
         }
         else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $result;
+    }
+
+    public static function mismaPelicula($nombrePelicula){
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT * FROM pelicula P WHERE P.nombre='%s'", $conn->real_escape_string($nombrePelicula));
+        $rs = $conn->query($query);
+        $result = false;
+        if ($rs) {
+            $fila = $rs->fetch_assoc();
+            if ($fila) {
+                $result = new Ropa($fila['Nombre'], $fila['Stock'], 
+                $fila['Color'], $fila['Categoria'], $fila['Talla'], 
+                $fila['Descripcion'], $fila['Precio'], $fila ['Imagen']);
+            }
+            $rs->free();
+        } else {
             error_log("Error BD ({$conn->errno}): {$conn->error}");
         }
         return $result;

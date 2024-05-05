@@ -44,7 +44,7 @@ class Alquiler {
     public static function nuevoAlquiler($idUsuario, $idPelicula, $fechaInicio, $fechaFin) {
 
         $alquiler = new Alquiler(null, $idUsuario, $idPelicula, $fechaInicio, $fechaFin);
-        $result - true;
+        $result = true;
 
         if (!$alquiler->anadir()){
             error_log("Error de inserción: No se ha podido insertar de manera correcta");

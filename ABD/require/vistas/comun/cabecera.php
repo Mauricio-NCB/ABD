@@ -17,6 +17,11 @@
                     <button type='submit'>Editar perfil</button>
                 </form>
             ");
+            echo("
+            <form action='verPelisAlquiladas.php'>
+                <button type='submit'>Pelis Alquiladas</button>
+            </form>
+        ");
 
             if (isset($_SESSION['esAdmin']) && $_SESSION['esAdmin']) {
                 echo("

@@ -52,7 +52,7 @@ class Pelicula {
         // Se almacena la nueva pelicula creada
 
         $pelicula = new Pelicula(null, $nombre, $descripcion, $precio);
-        if (!self::anadir($pelicula)) {
+        if (!$pelicula->anadir()) {
             error_log("Error de insercion: No se ha podido insertar de manera correcta la nueva pelicula");
             $result = false;
         }
@@ -60,17 +60,17 @@ class Pelicula {
         return $result;
     }
 
-    private static function anadir($pelicula) {
+    private function anadir() {
         $result = false;
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("INSERT INTO pelicula(nombre, descripcion, precio)
                         VALUES ('%s', '%s', '%s')"
-                    , $conn->real_escape_string($pelicula->nombre)
-                    , $conn->real_escape_string($pelicula->descripcion)
-                    , $conn->real_escape_string($pelicula->precio));
+                    , $conn->real_escape_string($this->nombre)
+                    , $conn->real_escape_string($this->descripcion)
+                    , $conn->real_escape_string($this->precio));
         
         if ($conn->query($query)) {
-            $pelicula->id = $conn->insert_id;
+            $this->id = $conn->insert_id;
             $result = true;
         }
         else {
@@ -115,6 +115,29 @@ class Pelicula {
 
     static function mostrarPelicula($id) {
         $pelicula = self::buscarPelicula($id);
+        return $pelicula;
+    }
+
+    static function buscarPelicula($id) {
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = "SELECT * FROM pelicula WHERE ID = '$id'";
+        //$pelicula = array('Id', 'Nombre', 'Descripcion', 'Precio', 'Valoracion', array());
+        $pelicula = array('Id', 'Nombre', 'Descripcion', 'Precio');
+        $result = $conn->query($query);
+        if ($result != null) {
+
+            $peliculaEncontrada = $result->fetch_assoc();
+            $pelicula['Id'] = $id;
+            $pelicula['Nombre'] = $peliculaEncontrada['nombre'];
+            $pelicula['Descripcion'] = $peliculaEncontrada['descripcion']; 
+            $pelicula['Precio'] = $peliculaEncontrada['precio'];
+            // Crear funcion para cargar valoraciones y comentarios de la tabla de usuarios
+
+            return $pelicula;
+        }else{
+            error_log("Error BD ({$conn->errno}):{$conn->error}");
+        }
+
         return $pelicula;
     }
 

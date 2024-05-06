@@ -33,8 +33,23 @@ if ($pelicula != null) {
         EOF;
     }
 
+    /*
+    Alquiler::editarValoracion($_SESSION['id'], $id);
 
+    //Crear formulario para darValoracion y para darComentario
 
+    if (Alquiler::estaComentado($_SESSION['id'], $id)) {
+        $botonAlquilar = <<<EOF
+        <form method="post" action="comentar.php">
+            <input type="hidden" name="id" value="$id">
+            <button type="submit" class="btn btn-primary" disabled>Alquilado</button>
+        </form>
+        EOF;
+    }
+    else {
+        
+    }
+*/
     $contenidoPrincipal = <<<EOF
     <div class="producto">
         <h4>$nombre</h4>

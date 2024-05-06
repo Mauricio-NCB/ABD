@@ -10,10 +10,10 @@
 use abd;
 
 DROP TABLE IF EXISTS `alquiler`;
-DROP TABLE IF EXISTS `pelicula`;
 DROP TABLE IF EXISTS `tarjeta`;
-DROP TABLE IF EXISTS `usuario`;
 DROP TABLE IF EXISTS `valoracion`;
+DROP TABLE IF EXISTS `pelicula`;
+DROP TABLE IF EXISTS `usuario`;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -106,9 +106,7 @@ CREATE TABLE IF NOT EXISTS `valoracion` (
 -- Indices de la tabla `alquiler`
 --
 ALTER TABLE `alquiler`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `idUsuario` (`idUsuario`),
-  ADD UNIQUE KEY `idPelicula` (`idPelicula`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `pelicula`
@@ -120,9 +118,7 @@ ALTER TABLE `pelicula`
 -- Indices de la tabla `tarjeta`
 --
 ALTER TABLE `tarjeta`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `idUsuario` (`idUsuario`);
-
+  ADD PRIMARY KEY (`id`);
 --
 -- Indices de la tabla `usuario`
 --
@@ -133,9 +129,7 @@ ALTER TABLE `usuario`
 -- Indices de la tabla `valoracion`
 --
 ALTER TABLE `valoracion`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `idUsuario` (`idUsuario`) USING BTREE,
-  ADD UNIQUE KEY `idPelicula` (`idPelicula`) USING BTREE;
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas

@@ -169,19 +169,17 @@ class Usuario {
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("SELECT * FROM alquiler WHERE idUsuario = '$_SESSION[id]'");     
         $rs = $conn->query($query);
-        $result = false;
+        $i = 0;
+        $idPelis=[];
         if ($rs->num_rows!=0) {
-            $fila = $rs->fetch_assoc();
-            if($fila){
-            $result = Pelicula::mostrarPelicula($fila['idPelicula']);
+            while($fila = $rs->fetch_assoc()){
+                if ($fila) {
+                    $idPelis[$i] = $fila['idPelicula'];
+                    $i++;
+                }
             }
         }
-        else {
-            echo "No hay peliculas alquiladas";
-        }
-        
-        return $result;
-
+        return $idPelis;
     }
 
     private static function hash($contrasena) {

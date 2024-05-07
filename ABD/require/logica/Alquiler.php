@@ -88,6 +88,107 @@ class Alquiler {
 
         return $alquilado;
     }
+
+    public static function estaValorado($idUsuario, $idPelicula) {
+        
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT puntuacion FROM valoracion V WHERE V.idUsuario='%s' AND V.idPelicula='%s'", 
+                            $conn->real_escape_string($idUsuario), $conn->real_escape_string($idPelicula));
+        $rs = $conn->query($query);
+        $valorado = false;
+
+        if ($rs->fetch_assoc()) {
+            $valorado = true;
+        }
+
+        return $valorado;
+    }
+
+    public static function estaComentado($idUsuario, $idPelicula) {
+        
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT comentario FROM valoracion V WHERE V.idUsuario='%s' AND V.idPelicula='%s'", 
+                            $conn->real_escape_string($idUsuario), $conn->real_escape_string($idPelicula));
+        $rs = $conn->query($query);
+        $comentado = false;
+
+        if ($rs->fetch_assoc()) {
+            $comentado = true;
+        }
+
+        return $comentado;
+    }
+
+    public static function darValoracion($puntuacion, $idUsuario, $idPelicula) {
+
+        $conn = Aplicacion::getInstance()->getConexionBd();
+
+        if (self::estaValorado($idUsuario, $idPelicula) || self::estaComentado($idUsuario, $idPelicula)) {
+            $query = sprintf("UPDATE valoracion SET puntuacion = '%s'
+            WHERE idUsuario = '%s' AND idPelicula = '%s'", 
+            $conn->real_escape_string($puntuacion), 
+            $conn->real_escape_string($idUsuario),
+            $conn->real_escape_string($idPelicula));
+
+            $rs = $conn->query($query);
+            $result = false;
+            if ($rs) {
+                $result = true;
+            }
+        }
+        else {
+            $query = sprintf("INSERT INTO valoracion (idUsuario, idPelicula, puntuacion) VALUES ('%s', '%s', '%s')", 
+            $conn->real_escape_string($idUsuario), 
+            $conn->real_escape_string($idPelicula),
+            $conn->real_escape_string($puntuacion));
+
+            $rs = $conn->query($query);
+            $result = false;
+            if ($rs) {
+                $result = true;
+                $conn->insert_id;
+            }
+    
+        }
+
+
+        return $result;
+    }
+
+    public static function darComentario($comentario, $idUsuario, $idPelicula) {
+
+        $conn = Aplicacion::getInstance()->getConexionBd();
+
+        if (self::estaValorado($idUsuario, $idPelicula) || self::estaComentado($idUsuario, $idPelicula)) {
+            $query = sprintf("UPDATE valoracion SET comentario = '%s'
+            WHERE idUsuario = '%s' AND idPelicula = '%s'", 
+            $conn->real_escape_string($comentario), 
+            $conn->real_escape_string($idUsuario),
+            $conn->real_escape_string($idPelicula));
+
+            $rs = $conn->query($query);
+            $result = false;
+            if ($rs) {
+                $result = true;
+            }
+        }
+        else {
+            $query = sprintf("INSERT INTO valoracion (idUsuario, idPelicula, comentario) VALUES ('%s', '%s', '%s')", 
+            $conn->real_escape_string($idUsuario), 
+            $conn->real_escape_string($idPelicula),
+            $conn->real_escape_string($comentario));
+
+            $rs = $conn->query($query);
+            $result = false;
+            if ($rs) {
+                $result = true;
+                $conn->insert_id;
+            }
+    
+        }
+
+        return $result;
+    }
 }
 
 ?>

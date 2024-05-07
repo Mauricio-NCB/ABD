@@ -17,14 +17,16 @@ if ($peliculas != null) {
         $valoracion = $pelicula->getValoracion(); 
 
         $htmlCatalogo .= <<<EOF
-        <a href="producto.php?id=$id">
-        <div class="producto">
-            <h4>$nombre</h4>
-            <p>$descripcion</p>
-            <p>$precio €</p>
-            <p>$valoracion</p>   
-        </div>
-        </a>
+        <fieldset>
+            <a href="producto.php?id=$id">
+            <div class="producto">
+                <h4>$nombre</h4>
+                <p>$descripcion</p>
+                <p>$precio €</p>
+                <p>$valoracion</p>   
+            </div>
+            </a>
+        </fieldset>
         EOF;
     }
 }

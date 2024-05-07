@@ -19,37 +19,64 @@ if ($pelicula != null) {
     if (Alquiler::estaAlquilado($_SESSION['id'], $id)) {
         $botonAlquilar = <<<EOF
         <form method="post" action="alquilar.php">
+        <div>
             <input type="hidden" name="id" value="$id">
             <button type="submit" class="btn btn-primary" disabled>Alquilado</button>
+        </div>
         </form>
         EOF;
     }
     else {
         $botonAlquilar = <<<EOF
         <form method="post" action="alquilar.php">
+        <div>
             <input type="hidden" name="id" value="$id">
             <button type="submit" class="btn btn-primary">Alquilar</button>
+        </div>
         </form>
         EOF;
     }
 
-    /*
-    Alquiler::editarValoracion($_SESSION['id'], $id);
-
+    
     //Crear formulario para darValoracion y para darComentario
 
-    if (Alquiler::estaComentado($_SESSION['id'], $id)) {
-        $botonAlquilar = <<<EOF
-        <form method="post" action="comentar.php">
-            <input type="hidden" name="id" value="$id">
-            <button type="submit" class="btn btn-primary" disabled>Alquilado</button>
-        </form>
-        EOF;
+
+    $options = '';
+
+    for ($i = 1; $i <= 10; $i++) {
+        $options .= '<option value="' .$i. '">' .$i. '</option>';
     }
-    else {
-        
-    }
-*/
+
+    $formValorar = <<<EOF
+    <form method="post" action="valorar.php">
+    <input type="hidden" name="id" value="$id">
+    <fieldset>
+            <div>
+                <label for="puntuacion"> Puntuación: </label>
+                <select id="puntuacion" name="puntuacion">
+                $options
+                </select>
+                <button type="submit" name="Valorar">Valorar</button>
+            </div>
+    </fieldset>
+    </form>
+    EOF;
+
+    //Buscar forma de usar Formulario pillando el post de la id de Pelicula
+
+    $formComentar = <<<EOF
+    <form method="post" action="comentar.php">
+    <input type="hidden" name="id" value="$id">
+    <fieldset>
+            <div>
+                <label for="comentario"> Comentario: </label>
+                <input id="comentario" type="text" name="comentario"/>
+                <button type="submit" name="Comentar">Comentar</button>
+            </div>
+    </fieldset>
+    </form>
+    EOF;
+
     $contenidoPrincipal = <<<EOF
     <div class="producto">
         <h4>$nombre</h4>
@@ -57,9 +84,8 @@ if ($pelicula != null) {
         <p>$precio €</p>
 
         $botonAlquilar
-
-        <a href="nuevaValoracion.php?id=$id">Valorar producto</a>
-
+        $formValorar
+        $formComentar
     </div>
     EOF;
 }

@@ -42,6 +42,7 @@ class FormularioAnadirPelicula extends Formulario {
                 {$erroresCampos['precio']}
             </div>
             <button type="submit" name="añadirPelicula">Añadir</button>
+        </fieldset>
         EOF;
         
         return $html;

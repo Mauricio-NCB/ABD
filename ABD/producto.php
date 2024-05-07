@@ -14,6 +14,8 @@ if ($pelicula != null) {
     $nombre = $pelicula["Nombre"];
     $descripcion = $pelicula["Descripcion"];
     $precio = $pelicula["Precio"];
+    $valoracion = Pelicula::obtenerValoracion($id);
+    $comentarios = Pelicula::obtenerComentarios($id);
 
     //Funcion para cargar valoraciones y comentarios de la tabla de usuarios
     if (Alquiler::estaAlquilado($_SESSION['id'], $id)) {
@@ -77,11 +79,34 @@ if ($pelicula != null) {
     </form>
     EOF;
 
+
+    $listaComentarios = "";
+    if ($comentarios != null) {
+        foreach($comentarios as $comentario) {
+
+            $listaComentarios .= <<<EOF
+            <fieldset>
+            <div class="valoracion">
+            <h4>Usuario registrado</h4>
+            <p>$comentario</p>
+            </div>
+            </fieldset>
+            EOF;
+        }
+    }
+    else {
+        $listaComentarios = <<<EOF
+        <h4>No hay comentarios del producto</h4>
+    EOF;
+    }
+
     $contenidoPrincipal = <<<EOF
     <div class="producto">
-        <h4>$nombre</h4>
+        <h2>$nombre</h2>
         <p>$descripcion</p>
         <p>$precio €</p>
+        <p>Puntuación $valoracion/10</p>
+        <p>$listaComentarios</p>
 
         $botonAlquilar
         $formValorar

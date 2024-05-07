@@ -23,7 +23,7 @@ if ($peliculas != null) {
                 <h4>$nombre</h4>
                 <p>$descripcion</p>
                 <p>$precio €</p>
-                <p>$valoracion</p>   
+                <p>$valoracion/10</p>   
             </div>
             </a>
         </fieldset>

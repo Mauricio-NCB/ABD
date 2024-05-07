@@ -171,7 +171,7 @@ class Pelicula {
         $result = $conn->query($query)->fetch_assoc();
         
         if ($result) {
-            return $result['valoracion'];
+            return round($result['valoracion']);
         }
         
         return null;
@@ -179,16 +179,17 @@ class Pelicula {
 
     static function obtenerComentarios($idPelicula) {
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "SELECT comentario FROM valoracion V WHERE V.idPelicula= '$idPelicula'";
+        $query = "SELECT * FROM valoracion V WHERE V.idPelicula= '$idPelicula'";
         $result = $conn->query($query);
         $comentarios = [];
         $i = 0;
 
         if ($result) {
             foreach($result as $fila) {
-                $comentarios[$i] = $fila;
+                $comentarios[$i] = $fila['comentario'];
                 $i++;
             }
+
             $result->free();
 
             return $comentarios;

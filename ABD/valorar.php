@@ -3,7 +3,7 @@ require_once 'require/config.php';
 
 use abd\Alquiler as Alquiler;
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Valorar'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Verificar si se ha enviado un formulario POST y se ha presionado el botón "Valorar"
     $idPelicula = $_POST['id'];
     $idUsuario = $_SESSION['id'];

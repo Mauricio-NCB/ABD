@@ -159,31 +159,31 @@ class Alquiler {
         $conn = Aplicacion::getInstance()->getConexionBd();
         $result = false;
 
-            if (self::estaValorado($idUsuario, $idPelicula) || self::estaComentado($idUsuario, $idPelicula)) {
-                $query = sprintf("UPDATE valoracion SET comentario = '%s'
-                WHERE idUsuario = '%s' AND idPelicula = '%s'", 
-                $conn->real_escape_string($comentario), 
-                $conn->real_escape_string($idUsuario),
-                $conn->real_escape_string($idPelicula));
+        if (self::estaValorado($idUsuario, $idPelicula) || self::estaComentado($idUsuario, $idPelicula)) {
+            $query = sprintf("UPDATE valoracion SET comentario = '%s'
+            WHERE idUsuario = '%s' AND idPelicula = '%s'", 
+            $conn->real_escape_string($comentario), 
+            $conn->real_escape_string($idUsuario),
+            $conn->real_escape_string($idPelicula));
 
-                $rs = $conn->query($query);
-                if ($rs) {
-                    $result = true;
-                }
+            $rs = $conn->query($query);
+            if ($rs) {
+                $result = true;
             }
-            else {
-                $query = sprintf("INSERT INTO valoracion (idUsuario, idPelicula, comentario) VALUES ('%s', '%s', '%s')", 
-                $conn->real_escape_string($idUsuario), 
-                $conn->real_escape_string($idPelicula),
-                $conn->real_escape_string($comentario));
+        }
+        else {
+            $query = sprintf("INSERT INTO valoracion (idUsuario, idPelicula, comentario) VALUES ('%s', '%s', '%s')", 
+            $conn->real_escape_string($idUsuario), 
+            $conn->real_escape_string($idPelicula),
+            $conn->real_escape_string($comentario));
 
-                $rs = $conn->query($query);
-                if ($rs) {
-                    $result = true;
-                    $conn->insert_id;
-                }
-        
+            $rs = $conn->query($query);
+            if ($rs) {
+                $result = true;
+                $conn->insert_id;
             }
+    
+        }
 
         return $result;
     }

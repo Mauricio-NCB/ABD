@@ -4,7 +4,7 @@ require_once 'require/config.php';
 use abd\Alquiler as Alquiler;
 
 // Verifica si se ha enviado un formulario POST
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST" ) {
     // Obtener el ID del producto desde el formulario
     $idPelicula = $_POST['id'];
     $idUsuario = $_SESSION['id'];

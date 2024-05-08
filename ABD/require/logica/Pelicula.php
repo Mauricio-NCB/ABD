@@ -113,11 +113,6 @@ class Pelicula {
         return $result;
     }
 
-    static function mostrarPelicula($id) {
-        $pelicula = self::buscarPelicula($id);
-        return $pelicula;
-    }
-
     static function buscarPelicula($id) {
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = "SELECT * FROM pelicula WHERE ID = '$id'";

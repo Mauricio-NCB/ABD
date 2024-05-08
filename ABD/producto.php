@@ -1,8 +1,10 @@
 <?php
 
 require_once 'require/config.php';
+use abd\FormularioDarComentario as FormularioDarComentario;
 use abd\Pelicula as Pelicula;
 use abd\Alquiler as Alquiler;
+
 
 $tituloPagina = "Vista de la pelicula";
 
@@ -42,10 +44,6 @@ if ($pelicula != null) {
         EOF;
     }
 
-    
-    //Crear formulario para darValoracion y para darComentario
-
-
     $options = '';
 
     for ($i = 1; $i <= 10; $i++) {
@@ -67,21 +65,8 @@ if ($pelicula != null) {
     </form>
     EOF;
 
-    //Buscar forma de usar Formulario pillando el post de la id de Pelicula
-
-    $formComentar = <<<EOF
-    <form method="post" action="comentar.php">
-    <input type="hidden" name="id" value="$id">
-    <fieldset>
-            <div>
-                <label for="comentario"> Comentario: </label>
-                <input id="comentario" type="text" name="comentario"/>
-                <button type="submit" name="Comentar">Comentar</button>
-            </div>
-    </fieldset>
-    </form>
-    EOF;
-
+    $formComentar = new FormularioDarComentario($id);
+    $htmlFormComentar = $formComentar->gestiona();
 
     $listaComentarios = "<h3>Comentarios</h3>";
     if ($comentarios != null) {
@@ -111,7 +96,7 @@ if ($pelicula != null) {
 
         $botonAlquilar
         $formValorar
-        $formComentar
+        $htmlFormComentar
 
         <p>$listaComentarios</p>
     </div>

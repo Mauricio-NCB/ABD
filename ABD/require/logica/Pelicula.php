@@ -182,12 +182,12 @@ class Pelicula {
         $query = "SELECT * FROM valoracion V WHERE V.idPelicula= '$idPelicula'";
         $result = $conn->query($query);
         $comentarios = [];
-        $i = 0;
 
         if ($result) {
             foreach($result as $fila) {
-                $comentarios[$i] = $fila['comentario'];
-                $i++;
+                if (!empty($fila['comentario'])) {
+                    $comentarios[] = $fila['comentario'];
+                }
             }
 
             $result->free();

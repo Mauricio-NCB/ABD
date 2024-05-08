@@ -48,10 +48,11 @@ class FormularioDarPuntuacion extends Formulario
     protected function procesaFormulario(&$datos) {
 
         $idUsuario = $_SESSION['id'];
+        $puntuacion = trim($datos['puntuacion'] ?? '');
 
         if (Alquiler::estaAlquilado($idUsuario, $this->idPelicula)) {
             
-            $resultado = Alquiler::darPuntuacion($puntuacion, idUsuario, $this->idPelicula);
+            $resultado = Alquiler::darPuntuacion($puntuacion, $idUsuario, $this->idPelicula);
         
             if(!$resultado){
                 $this->errores[] = "Se ha producido un error inesperado";

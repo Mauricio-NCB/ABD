@@ -20,21 +20,24 @@ if ($pelicula != null) {
     //Funcion para cargar valoraciones y comentarios de la tabla de usuarios
     if (Alquiler::estaAlquilado($_SESSION['id'], $id)) {
         $botonAlquilar = <<<EOF
-        <form method="post" action="alquilar.php">
-        <div>
-            <input type="hidden" name="id" value="$id">
-            <button type="submit" class="btn btn-primary" disabled>Alquilado</button>
-        </div>
-        </form>
+        <fieldset>
+            <div>
+                <input type="hidden" name="id" value="$id">
+                <button type="submit" class="btn btn-primary" disabled>Gracias por tu compra</button>
+            </div>
+        </fieldset>
         EOF;
     }
     else {
         $botonAlquilar = <<<EOF
         <form method="post" action="alquilar.php">
-        <div>
-            <input type="hidden" name="id" value="$id">
-            <button type="submit" class="btn btn-primary">Alquilar</button>
-        </div>
+        <fieldset>
+            <div>
+                <label for="alquiler"> Ahora en tu pantalla por $precio €</label>
+                <input type="hidden" name="id" value="$id">
+                <button type="submit" class="btn btn-primary">Alquilar</button>
+            </div>
+        </fieldset>
         </form>
         EOF;
     }
@@ -80,7 +83,7 @@ if ($pelicula != null) {
     EOF;
 
 
-    $listaComentarios = "";
+    $listaComentarios = "<h3>Comentarios</h3>";
     if ($comentarios != null) {
         foreach($comentarios as $comentario) {
 
@@ -104,13 +107,13 @@ if ($pelicula != null) {
     <div class="producto">
         <h2>$nombre</h2>
         <p>$descripcion</p>
-        <p>$precio €</p>
         <p>Puntuación $valoracion/10</p>
-        <p>$listaComentarios</p>
 
         $botonAlquilar
         $formValorar
         $formComentar
+
+        <p>$listaComentarios</p>
     </div>
     EOF;
 }

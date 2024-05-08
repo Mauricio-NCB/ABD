@@ -77,7 +77,6 @@ class FormularioEditarPerfil extends Formulario {
             if (!$usuario) {
                 $this->errores[] = "Error al editar los datos";
             } else {
-                $_SESSION['email'] = $correo;
                 $_SESSION['nombreusuario'] = $nombreUsuario;
                 $_SESSION['esAdmin'] = $esAdmin;
                 $_SESSION['password'] = $password_nueva; 

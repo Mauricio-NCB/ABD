@@ -50,9 +50,9 @@ class FormularioDarComentario extends Formulario
 
             if (Alquiler::estaAlquilado($_SESSION['id'], $this->idPelicula)) {
                 
-                $alquiler = Alquiler::darComentario($comentario, $_SESSION['id'], $this->idPelicula);
+                $resultado = Alquiler::darComentario($comentario, $_SESSION['id'], $this->idPelicula);
             
-                if(!$alquiler){
+                if(!$resultado){
                     $this->errores[] = "Se ha producido un error inesperado";
                 }
             }

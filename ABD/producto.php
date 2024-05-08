@@ -2,6 +2,7 @@
 
 require_once 'require/config.php';
 use abd\FormularioDarComentario as FormularioDarComentario;
+use abd\FormularioDarPuntuacion as FormularioDarPuntuacion;
 use abd\Pelicula as Pelicula;
 use abd\Alquiler as Alquiler;
 
@@ -44,26 +45,8 @@ if ($pelicula != null) {
         EOF;
     }
 
-    $options = '';
-
-    for ($i = 1; $i <= 10; $i++) {
-        $options .= '<option value="' .$i. '">' .$i. '</option>';
-    }
-
-    $formValorar = <<<EOF
-    <form method="post" action="valorar.php">
-    <input type="hidden" name="id" value="$id">
-    <fieldset>
-            <div>
-                <label for="puntuacion"> Puntuación: </label>
-                <select id="puntuacion" name="puntuacion">
-                $options
-                </select>
-                <button type="submit" name="Valorar">Valorar</button>
-            </div>
-    </fieldset>
-    </form>
-    EOF;
+    $formPuntuar = new FormularioDarPuntuacion($id);
+    $htmlFormPuntuar = $formPuntuar->gestiona();
 
     $formComentar = new FormularioDarComentario($id);
     $htmlFormComentar = $formComentar->gestiona();
@@ -95,7 +78,7 @@ if ($pelicula != null) {
         <p>Puntuación $valoracion/10</p>
 
         $botonAlquilar
-        $formValorar
+        $htmlFormPuntuar
         $htmlFormComentar
 
         <p>$listaComentarios</p>

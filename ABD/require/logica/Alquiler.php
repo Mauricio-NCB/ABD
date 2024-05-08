@@ -89,19 +89,19 @@ class Alquiler {
         return $alquilado;
     }
 
-    public static function estaValorado($idUsuario, $idPelicula) {
+    public static function estaPuntuado($idUsuario, $idPelicula) {
         
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("SELECT puntuacion FROM valoracion V WHERE V.idUsuario='%s' AND V.idPelicula='%s'", 
                             $conn->real_escape_string($idUsuario), $conn->real_escape_string($idPelicula));
         $rs = $conn->query($query);
-        $valorado = false;
+        $puntuado = false;
 
         if ($rs->fetch_assoc()) {
-            $valorado = true;
+            $puntuado = true;
         }
 
-        return $valorado;
+        return $puntuado;
     }
 
     public static function estaComentado($idUsuario, $idPelicula) {
@@ -119,12 +119,12 @@ class Alquiler {
         return $comentado;
     }
 
-    public static function darValoracion($puntuacion, $idUsuario, $idPelicula) {
+    public static function darPuntuacion($puntuacion, $idUsuario, $idPelicula) {
 
         $conn = Aplicacion::getInstance()->getConexionBd();
         $result = false;
 
-        if (self::estaValorado($idUsuario, $idPelicula) || self::estaComentado($idUsuario, $idPelicula)) {
+        if (self::estaPuntuado($idUsuario, $idPelicula) || self::estaComentado($idUsuario, $idPelicula)) {
             $query = sprintf("UPDATE valoracion SET puntuacion = '%s'
             WHERE idUsuario = '%s' AND idPelicula = '%s'", 
             $conn->real_escape_string($puntuacion), 
@@ -150,7 +150,6 @@ class Alquiler {
     
         }
 
-
         return $result;
     }
 
@@ -159,7 +158,7 @@ class Alquiler {
         $conn = Aplicacion::getInstance()->getConexionBd();
         $result = false;
 
-        if (self::estaValorado($idUsuario, $idPelicula) || self::estaComentado($idUsuario, $idPelicula)) {
+        if (self::estaPuntuado($idUsuario, $idPelicula) || self::estaComentado($idUsuario, $idPelicula)) {
             $query = sprintf("UPDATE valoracion SET comentario = '%s'
             WHERE idUsuario = '%s' AND idPelicula = '%s'", 
             $conn->real_escape_string($comentario), 

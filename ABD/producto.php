@@ -25,9 +25,10 @@ if ($pelicula != null) {
     if (Alquiler::estaAlquilado($_SESSION['id'], $id)) {
         $htmlFormAlquilar = <<<EOF
         <fieldset>
+            <legend>Precio</legend>
             <div>
+                <label for="alquiler">Gracias por tu compra!</label>
                 <input type="hidden" name="id" value="$id">
-                <button type="submit" class="btn btn-primary" disabled>Gracias por tu compra</button>
             </div>
         </fieldset>
         EOF;

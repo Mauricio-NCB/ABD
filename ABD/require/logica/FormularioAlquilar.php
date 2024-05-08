@@ -27,7 +27,7 @@ class FormularioAlquilar extends Formulario
         $html = <<<EOF
         <input type="hidden" name="id" value="$id">
         <fieldset>
-            <legend>Datos para alquiler</legend>
+            <legend>Precio</legend>
             <div>
                 <label for="alquiler">Ahora en tu pantalla por $precio €</label>
                 <button type="submit" class="btn btn-primary">Alquilar</button>
@@ -51,7 +51,7 @@ class FormularioAlquilar extends Formulario
             $fechaActual = date("Y-m-d"); // Formato adecuado para strtotime()
             $fechaDestino = date("Y-m-d", strtotime("+1 month", strtotime($fechaActual)));
     
-            Alquiler::nuevoAlquiler($idUsuario, $idPelicula, $fechaActual, $fechaDestino);
+            Alquiler::nuevoAlquiler($idUsuario, $this->idPelicula, $fechaActual, $fechaDestino);
         }
     }
 }

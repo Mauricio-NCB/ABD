@@ -3,6 +3,7 @@
 require_once 'require/config.php';
 use abd\FormularioDarComentario as FormularioDarComentario;
 use abd\FormularioDarPuntuacion as FormularioDarPuntuacion;
+use abd\FormularioAlquilar as FormularioAlquilar;
 use abd\Pelicula as Pelicula;
 use abd\Alquiler as Alquiler;
 
@@ -22,7 +23,7 @@ if ($pelicula != null) {
 
     //Funcion para cargar valoraciones y comentarios de la tabla de usuarios
     if (Alquiler::estaAlquilado($_SESSION['id'], $id)) {
-        $botonAlquilar = <<<EOF
+        $htmlFormAlquilar = <<<EOF
         <fieldset>
             <div>
                 <input type="hidden" name="id" value="$id">
@@ -32,17 +33,8 @@ if ($pelicula != null) {
         EOF;
     }
     else {
-        $botonAlquilar = <<<EOF
-        <form method="post" action="alquilar.php">
-        <fieldset>
-            <div>
-                <label for="alquiler"> Ahora en tu pantalla por $precio €</label>
-                <input type="hidden" name="id" value="$id">
-                <button type="submit" class="btn btn-primary">Alquilar</button>
-            </div>
-        </fieldset>
-        </form>
-        EOF;
+        $formAlquilar = new FormularioAlquilar($id, $precio);
+        $htmlFormAlquilar = $formAlquilar->gestiona();
     }
 
     $formPuntuar = new FormularioDarPuntuacion($id);
@@ -77,7 +69,7 @@ if ($pelicula != null) {
         <p>$descripcion</p>
         <p>Puntuación $valoracion/10</p>
 
-        $botonAlquilar
+        $htmlFormAlquilar
         $htmlFormPuntuar
         $htmlFormComentar
 

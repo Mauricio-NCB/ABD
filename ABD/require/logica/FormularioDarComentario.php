@@ -39,6 +39,7 @@ class FormularioDarComentario extends Formulario
 
     protected function procesaFormulario(&$datos) {
         $this->errores = [];
+        $idUsuario = $_SESSION['id'];
 
         $comentario = trim($datos['comentario'] ?? '');
         $comentario = filter_var($comentario, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
@@ -48,9 +49,9 @@ class FormularioDarComentario extends Formulario
 
         if (count($this->errores) === 0) {
 
-            if (Alquiler::estaAlquilado($_SESSION['id'], $this->idPelicula)) {
+            if (Alquiler::estaAlquilado($idUsuario, $this->idPelicula)) {
                 
-                $resultado = Alquiler::darComentario($comentario, $_SESSION['id'], $this->idPelicula);
+                $resultado = Alquiler::darComentario($comentario, $idUsuario, $this->idPelicula);
             
                 if(!$resultado){
                     $this->errores[] = "Se ha producido un error inesperado";

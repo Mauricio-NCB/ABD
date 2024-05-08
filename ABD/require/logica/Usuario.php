@@ -103,6 +103,16 @@ class Usuario {
         return $result;
     }
 
+    public static function tieneTarjeta($idU) {
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT * FROM tarjeta T WHERE T.idUsuario = '%s'" , $conn->real_escape_string($idU));
+        $result = $conn->query($query);
+        if ($result->num_rows > 0) {
+            return true;
+        }
+        return false;
+    }
+
     public static function buscaTarjeta($tarjeta, $idU) {
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("SELECT * FROM tarjeta T WHERE T.numeroTarjeta='%s' AND T.idUsuario = '%s'" , $conn->real_escape_string($tarjeta), $conn->real_escape_string($idU));
@@ -165,7 +175,7 @@ class Usuario {
         return $result;
     }
 
-    public static function mostrarPeliculasAlquiladas ($idUsuario){
+    public static function mostrarPeliculasAlquiladas($idUsuario){
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("SELECT * FROM alquiler WHERE idUsuario = '$_SESSION[id]'");     
         $rs = $conn->query($query);

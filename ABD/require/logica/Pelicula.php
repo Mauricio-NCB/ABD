@@ -121,20 +121,20 @@ class Pelicula {
     static function buscarPelicula($id) {
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = "SELECT * FROM pelicula WHERE ID = '$id'";
-        //$pelicula = array('Id', 'Nombre', 'Descripcion', 'Precio', 'Valoracion', array());
-        $pelicula = array('Id', 'Nombre', 'Descripcion', 'Precio');
+        $pelicula = null;
         $result = $conn->query($query);
-        if ($result != null) {
+        if ($result && $fila = $result->fetch_assoc()) {
 
-            $peliculaEncontrada = $result->fetch_assoc();
+            $pelicula = array('Id', 'Nombre', 'Descripcion', 'Precio');
+
             $pelicula['Id'] = $id;
-            $pelicula['Nombre'] = $peliculaEncontrada['nombre'];
-            $pelicula['Descripcion'] = $peliculaEncontrada['descripcion']; 
-            $pelicula['Precio'] = $peliculaEncontrada['precio'];
-            // Crear funcion para cargar valoraciones y comentarios de la tabla de usuarios
+            $pelicula['Nombre'] = $fila['nombre'];
+            $pelicula['Descripcion'] = $fila['descripcion']; 
+            $pelicula['Precio'] = $fila['precio'];
 
             return $pelicula;
-        }else{
+        }
+        else {
             error_log("Error BD ({$conn->errno}):{$conn->error}");
         }
 

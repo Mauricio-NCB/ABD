@@ -6,7 +6,7 @@ use abd\Alquiler as Alquiler;
 
 $tituloPagina = "Vista de la pelicula";
 
-$pelicula = Pelicula::mostrarPelicula($_REQUEST["id"]);
+$pelicula = Pelicula::buscarPelicula($_REQUEST["id"]);
 
 if ($pelicula != null) {
 

@@ -22,7 +22,7 @@ if ($pelicula != null) {
     $comentarios = Pelicula::obtenerComentarios($id);
 
     //Funcion para cargar valoraciones y comentarios de la tabla de usuarios
-    if (Alquiler::estaAlquilado($_SESSION['id'], $id)) {
+    if (isset($_SESSION['id']) && Alquiler::estaAlquilado($_SESSION['id'], $id)) {
         $htmlFormAlquilar = <<<EOF
         <fieldset>
             <legend>Precio</legend>

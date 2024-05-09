@@ -42,16 +42,24 @@ class FormularioAlquilar extends Formulario
 
     protected function procesaFormulario(&$datos) {
 
-        $idUsuario = $_SESSION['id'];
+        $this->errores = [];
+        
+        if (isset($_SESSION['id'])) {
 
-        if(!Usuario::tieneTarjeta($idUsuario)) {
-            $this->errores[] = "El usuario necesita registrar una tarjeta para alquilar";
+            $idUsuario = $_SESSION['id'];
+
+            if(!Usuario::tieneTarjeta($idUsuario)) {
+                $this->errores[] = "El usuario necesita registrar una tarjeta para alquilar";
+            }
+            else {
+                $fechaActual = date("Y-m-d"); // Formato adecuado para strtotime()
+                $fechaDestino = date("Y-m-d", strtotime("+1 month", strtotime($fechaActual)));
+        
+                Alquiler::nuevoAlquiler($idUsuario, $this->idPelicula, $fechaActual, $fechaDestino);
+            }
         }
         else {
-            $fechaActual = date("Y-m-d"); // Formato adecuado para strtotime()
-            $fechaDestino = date("Y-m-d", strtotime("+1 month", strtotime($fechaActual)));
-    
-            Alquiler::nuevoAlquiler($idUsuario, $this->idPelicula, $fechaActual, $fechaDestino);
+            $this->errores[] = "El cliente necesita estar logueado";
         }
     }
 }

@@ -39,28 +39,35 @@ class FormularioDarComentario extends Formulario
 
     protected function procesaFormulario(&$datos) {
         $this->errores = [];
-        $idUsuario = $_SESSION['id'];
 
-        $comentario = trim($datos['comentario'] ?? '');
-        $comentario = filter_var($comentario, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        if (!$comentario || empty($comentario) ) {
-            $this->errores['comentario'] = 'El comentario no puede estar vacío.';
-        }
+        if(isset($_SESSION['id'])) {
 
-        if (count($this->errores) === 0) {
+            $idUsuario = $_SESSION['id'];
 
-            if (Alquiler::estaAlquilado($idUsuario, $this->idPelicula)) {
+            $comentario = trim($datos['comentario'] ?? '');
+            $comentario = filter_var($comentario, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            if (!$comentario || empty($comentario) ) {
+                $this->errores['comentario'] = 'El comentario no puede estar vacío.';
+            }
+
+            if (count($this->errores) === 0) {
+
+                if (Alquiler::estaAlquilado($idUsuario, $this->idPelicula)) {
+                    
+                    $resultado = Alquiler::darComentario($comentario, $idUsuario, $this->idPelicula);
                 
-                $resultado = Alquiler::darComentario($comentario, $idUsuario, $this->idPelicula);
-            
-                if(!$resultado){
-                    $this->errores[] = "Se ha producido un error inesperado";
+                    if(!$resultado){
+                        $this->errores[] = "Se ha producido un error inesperado";
+                    }
                 }
-            }
-            else {
-                $this->errores[] = 'Necesitas alquilar la pelicula para poder hacer una valoración';
-            }
+                else {
+                    $this->errores[] = 'Necesitas alquilar la pelicula para poder hacer una valoración';
+                }
 
+            }
+        }
+        else {
+            $this->errores[] = 'El cliente necesita estar logueado';
         }
     }
 }

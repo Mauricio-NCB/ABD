@@ -9,9 +9,9 @@ $tituloPagina = "Lista de Peliculas Alquiladas";
 
 $contenidoPrincipal = "<h1>Estás son tus páginas alquiladas.</h1>";
 
+$conn = Aplicacion::getInstance()->getConexionBd();
 $peliculas = Alquiler::mostrarPeliculasAlquiladas($_SESSION['id']);
 $i=0;
-$conn = Aplicacion::getInstance()->getConexionBd();
 if(count($peliculas) != 0){
     while ($i != count($peliculas)){
         $pelis = Pelicula::buscarPelicula($peliculas[$i]);

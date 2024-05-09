@@ -1,14 +1,14 @@
 <?php 
 
 require_once __DIR__.'/require/config.php';
-use abd\Usuario as Usuario;
+use abd\Alquiler as Alquiler;
 use abd\Aplicacion as Aplicacion;
 
 $tituloPagina = "Lista de Peliculas Alquiladas";
 
-$contenidoPrincipal = "<h1>Estás son tús páginas alquiladas.</h1>";
+$contenidoPrincipal = "<h1>Estás son tus páginas alquiladas.</h1>";
 
-$peliculas = Usuario::mostrarPeliculasAlquiladas($_SESSION['id']);
+$peliculas = Alquiler::mostrarPeliculasAlquiladas($_SESSION['id']);
 $i=0;
 $conn = Aplicacion::getInstance()->getConexionBd();
 if(count($peliculas) != 0){

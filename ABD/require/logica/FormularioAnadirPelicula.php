@@ -76,7 +76,7 @@ class FormularioAnadirPelicula extends Formulario {
             }
             else{
                 if (!Pelicula::anadirPelicula($nombre, $descripcion, $precio,)){
-                    $this->errores[] = "La prenda no ha podido ser insertada en la base de datos";
+                    $this->errores[] = "La pelicula no ha podido ser insertada en la base de datos";
                 }
             }
                 

@@ -18,6 +18,9 @@ else {
 	<form action='gestionPeliculas.php'>
 		<button type='submit' name="submit" id="submit">Gestión de películas</button>
 	</form>
+	<form action='gestionAlquileres.php'>
+		<button type='submit' name="submit" id="submit">Gestión de alquileres</button>
+	</form>
 	EOS;
 }
 

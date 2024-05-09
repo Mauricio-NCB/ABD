@@ -175,23 +175,6 @@ class Usuario {
         return $result;
     }
 
-    public static function mostrarPeliculasAlquiladas($idUsuario){
-        $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = sprintf("SELECT * FROM alquiler WHERE idUsuario = '$_SESSION[id]'");     
-        $rs = $conn->query($query);
-        $i = 0;
-        $idPelis=[];
-        if ($rs->num_rows!=0) {
-            while($fila = $rs->fetch_assoc()){
-                if ($fila) {
-                    $idPelis[$i] = $fila['idPelicula'];
-                    $i++;
-                }
-            }
-        }
-        return $idPelis;
-    }
-
     private static function hash($contrasena) {
         return password_hash($contrasena, PASSWORD_DEFAULT);
     }

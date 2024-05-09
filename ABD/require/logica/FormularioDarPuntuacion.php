@@ -47,19 +47,27 @@ class FormularioDarPuntuacion extends Formulario
 
     protected function procesaFormulario(&$datos) {
 
-        $idUsuario = $_SESSION['id'];
-        $puntuacion = trim($datos['puntuacion'] ?? '');
+        $this->errores = [];
 
-        if (Alquiler::estaAlquilado($idUsuario, $this->idPelicula)) {
+        if (isset($_SESSION['id'])) {
+
+            $idUsuario = $_SESSION['id'];
+            $puntuacion = trim($datos['puntuacion'] ?? '');
+
+            if (Alquiler::estaAlquilado($idUsuario, $this->idPelicula)) {
+                
+                $resultado = Alquiler::darPuntuacion($puntuacion, $idUsuario, $this->idPelicula);
             
-            $resultado = Alquiler::darPuntuacion($puntuacion, $idUsuario, $this->idPelicula);
-        
-            if(!$resultado){
-                $this->errores[] = "Se ha producido un error inesperado";
+                if(!$resultado){
+                    $this->errores[] = "Se ha producido un error inesperado";
+                }
+            }
+            else {
+                $this->errores[] = 'Necesitas alquilar la pelicula para poder hacer una valoración';
             }
         }
         else {
-            $this->errores[] = 'Necesitas alquilar la pelicula para poder hacer una valoración';
+            $this->errores[] = "El cliente necesita estar logueado";
         }
 
     }

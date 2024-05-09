@@ -120,12 +120,14 @@ class Pelicula {
         $result = $conn->query($query);
         if ($result && $fila = $result->fetch_assoc()) {
 
-            $pelicula = array('Id', 'Nombre', 'Descripcion', 'Precio');
+            $pelicula = array('Id', 'Nombre', 'Descripcion', 'Precio', 'Valoracion', 'Comentarios');
 
             $pelicula['Id'] = $id;
             $pelicula['Nombre'] = $fila['nombre'];
             $pelicula['Descripcion'] = $fila['descripcion']; 
             $pelicula['Precio'] = $fila['precio'];
+            $pelicula['Valoracion'] = Pelicula::obtenerValoracion($id);
+            $pelicula['Comentarios'] = Pelicula::obtenerComentarios($id);
 
             return $pelicula;
         }

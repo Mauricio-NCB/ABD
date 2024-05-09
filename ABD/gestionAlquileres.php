@@ -3,7 +3,7 @@
 //Muestra alquileres realizados y permite eliminar comentarios o valoraciones
 require_once __DIR__."/require/config.php";
 use abd\Alquiler as Alquiler;
-use abd\Aplicacion as Aplicacion;
+use abd\Pelicula as Pelicula;
 
 $tituloPagina = 'Gestión de alquileres';
 
@@ -14,8 +14,23 @@ if (! isset($_SESSION['esAdmin']) || !$_SESSION['esAdmin']) {
 }
 else {
 
-    $peliculas = 
+    $idPeliculasAlquiladas = Alquiler::mostrarPeliculasAlquiladas();
 
+    if (count($idPeliculasAlquiladas) !=0) {
+        foreach($idPeliculasAlquiladas as $idPelicula) {
+
+            $pelicula = Pelicula::buscarPelicula($idPelicula);
+            $contenidoPrincipal .= <<< EOS
+            <p>Nombre de la pelicula: {$pelicula['Nombre']}</p>
+            <p>Descripcion de la pelicula: {$pelicula['Descripcion']}</p>
+            <p>Precio del alquiler: {$pelicula['Precio']}</p> 
+            EOS;
+        }
+    }
+    else {
+        $contenidoPrincipal .= "No hay películas alquiladas por el momento";
+
+    }
 	$contenidoPrincipal = <<<EOS
 	<h1>Gestión de alquileres</h1>
 	<p>Permite ver alquileres y eliminar comentarios o valoraciones</p>

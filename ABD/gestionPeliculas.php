@@ -12,7 +12,7 @@ if (! isset($_SESSION['esAdmin']) || !$_SESSION['esAdmin']) {
 }
 else {
 	$contenidoPrincipal = <<<EOS
-	<h1>Gestión de ropa</h1>
+	<h1>Gestión de Películas</h1>
 	<p>Permite añadir, eliminar y editar peliculas</p>
 	<div id="Boton de administracion">
 	<form action='anadirPelicula.php'>

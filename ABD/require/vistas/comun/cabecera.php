@@ -43,7 +43,7 @@
     echo "<div class='barranav'>";
     echo "<ul>";
     echo "<li><a href=indice.php>Inicio</a></li>";
-    echo "<li><a href=catalogo.php>Catalogo</a></li>";
+    echo "<li><a href=catalogo.php>Catálogo</a></li>";
     echo "<ul>";
     echo "</div>";
 ?>

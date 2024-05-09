@@ -2,6 +2,7 @@
 
 require_once __DIR__.'/require/config.php';
 use abd\Alquiler as Alquiler;
+use abd\Pelicula as Pelicula;
 use abd\Aplicacion as Aplicacion;
 
 $tituloPagina = "Lista de Peliculas Alquiladas";
@@ -13,15 +14,13 @@ $i=0;
 $conn = Aplicacion::getInstance()->getConexionBd();
 if(count($peliculas) != 0){
     while ($i != count($peliculas)){
-        $query = sprintf("SELECT * FROM pelicula WHERE id = '$peliculas[$i]'");     
-        $result = $conn->query($query);
-        $row=$result->fetch_array();
+        $pelis = Pelicula::buscarPelicula($peliculas[$i]);
         $contenidoPrincipal .= <<< EOS
-            <p>Nombre de la pelicula: {$row['nombre']}</p>
-            <p>Descripcion de la pelicula: {$row['descripcion']}</p>
-            <p>Precio del alquiler: {$row['precio']}</p> 
+            <p>Nombre de la pelicula: {$pelis['Nombre']}</p>
+            <p>Descripcion de la pelicula: {$pelis['Descripcion']}</p>
+            <p>Precio del alquiler: {$pelis['Precio']}</p> 
             EOS;
-        $query2 = sprintf("SELECT puntuacion , comentario FROM valoracion WHERE idPelicula = '$row[id]'"); 
+        $query2 = sprintf("SELECT puntuacion , comentario FROM valoracion WHERE idPelicula = '$pelis[Id]'"); 
         $result2 = $conn->query($query2);
         $row2 = $result2->fetch_array();
         if($result2->num_rows!=0){
@@ -38,7 +37,6 @@ if(count($peliculas) != 0){
         $i++;
         
     }
-    $result->free();
     $result2->free();
 }
 else{

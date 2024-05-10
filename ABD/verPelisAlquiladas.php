@@ -3,6 +3,8 @@
 require_once __DIR__.'/require/config.php';
 use abd\Alquiler as Alquiler;
 use abd\Pelicula as Pelicula;
+use abd\FormularioEliminarPuntuacion as FormularioEliminarPuntuacion;
+use abd\FormularioEliminarComentario as FormularioEliminarComentario;
 
 $tituloPagina = "Lista de Peliculas Alquiladas";
 
@@ -15,9 +17,14 @@ if(count($alquileres) != 0){
         $pelicula = Pelicula::buscarPelicula($alquiler['idPelicula']);        
         $puntuacion = Pelicula::obtenerValoracion($pelicula['Id'], $_SESSION['id']);
         $comentario = Pelicula::obtenerComentarios($pelicula['Id'], $_SESSION['id']);
+        $formDelPuntuacion = new FormularioEliminarPuntuacion($alquiler['idUsuario'], $pelicula['Id']);
+        $htmlFormPunt = $formDelPuntuacion->gestiona();
+
+        $formDelComentario = new FormularioEliminarComentario($alquiler['idUsuario'], $pelicula['Id']);
+        $htmlFormCom = $formDelComentario->gestiona();
 
         $contenidoPrincipal .= <<< EOS
-            <p>Nombre de la pelicula: {$pelicula['Nombre']}</p>
+            <p>Nombre de la pelicula: <a href="producto.php?id=$pelicula[Id]"> {$pelicula['Nombre']} </a> </p>
             <p>Descripcion de la pelicula: {$pelicula['Descripcion']}</p>
             <p>Precio del alquiler: {$pelicula['Precio']}</p>            
             <p>Fecha de Inicio del alquiler: {$alquiler['fechaInicio']}</p>
@@ -25,13 +32,13 @@ if(count($alquileres) != 0){
             EOS;
 
         if (!empty($puntuacion) && $puntuacion != 0) {
-            $contenidoPrincipal .= "<p>Puntuación sobre la película: {$puntuacion}</p>$htmlFormPunt";
+            $contenidoPrincipal .= "<p>Puntuación sobre la película: {$puntuacion}</p> $htmlFormPunt";
         } else {
             $contenidoPrincipal .= "<p>No hay puntuación sobre esta película.</p>";
         }
 
         if (!empty($comentario)) {
-            $contenidoPrincipal .= "<p>Comentario sobre la película: {$comentario[0]}</p>$htmlFormCom";
+            $contenidoPrincipal .= "<p>Comentario sobre la película: {$comentario[0]}</p> $htmlFormCom";
         } else {
             $contenidoPrincipal .= "<p>No hay comentarios sobre esta película.</p>";
         }

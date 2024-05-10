@@ -103,6 +103,24 @@ class Usuario {
         return $result;
     }
 
+    public static function listaIdsUsuarios() {
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("SELECT id FROM usuario U ");
+        $rs = $conn->query($query);
+        $result = [];
+
+        if ($rs) {
+            foreach ($rs as $fila) {  
+                $result[] = $fila['id']; 
+            }
+            $rs->free();
+        }
+        else {
+            error_log("Error BD ({$conn->errno}): $conn->error");
+        }
+        return $result;
+    }
+
     public static function tieneTarjeta($idU) {
         $conn = Aplicacion::getInstance()->getConexionBd();
         $query = sprintf("SELECT * FROM tarjeta T WHERE T.idUsuario = '%s'" , $conn->real_escape_string($idU));

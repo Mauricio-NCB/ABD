@@ -84,18 +84,16 @@ class Alquiler {
         }
         
         $rs = $conn->query($query);
-        $i = 0;
-        $idPelis=[];
-
-        if ($rs->num_rows!=0) {
-            while($fila = $rs->fetch_assoc()){
+        $alquileres = [];
+    
+        if ($rs->num_rows != 0) {
+            while ($fila = $rs->fetch_assoc()) {
                 if ($fila) {
-                    $idPelis[$i] = $fila['idPelicula'];
-                    $i++;
+                    $alquileres[] = $fila; // Agregar la fila completa del alquiler al array
                 }
             }
         }
-        return $idPelis;
+        return $alquileres;
     }
     
     public static function estaAlquilado($idUsuario, $idPelicula) {
@@ -121,7 +119,7 @@ class Alquiler {
         $rs = $conn->query($query);
         $puntuado = false;
 
-        if ($rs->fetch_assoc()) {
+        if ($rs->fetch_assoc() != 0) {
             $puntuado = true;
         }
 
@@ -208,6 +206,48 @@ class Alquiler {
     
         }
 
+        return $result;
+    }
+
+    public static function eliminarPuntuacion($idUsuario, $idPelicula) {
+        $result = false;
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("UPDATE valoracion SET puntuacion = NULL WHERE idUsuario = '%s' AND idPelicula = '%s'", 
+                                    $conn->real_escape_string($idUsuario), $conn->real_escape_string($idPelicula));
+        if ($conn->query($query)) {
+            $result = true;
+        }
+        else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $result;
+    }
+
+    public static function eliminarComentario($idUsuario, $idPelicula) {
+        $result = false;
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("UPDATE valoracion SET comentario = NULL WHERE idUsuario = '%s' AND idPelicula = '%s'", 
+                                    $conn->real_escape_string($idUsuario), $conn->real_escape_string($idPelicula));
+        if ($conn->query($query)) {
+            $result = true;
+        }
+        else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
+        return $result;
+    }
+
+    public static function eliminarValoracion($idUsuario, $idPelicula) {
+        $result = false;
+        $conn = Aplicacion::getInstance()->getConexionBd();
+        $query = sprintf("DELETE FROM valoracion WHERE idUsuario = '%s' AND idPelicula = '%s'", 
+                                    $conn->real_escape_string($idUsuario), $conn->real_escape_string($idPelicula));
+        if ($conn->query($query)) {
+            $result = true;
+        }
+        else {
+            error_log("Error BD ({$conn->errno}): {$conn->error}");
+        }
         return $result;
     }
 }

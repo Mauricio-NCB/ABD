@@ -18,8 +18,8 @@ if ($pelicula != null) {
     $nombre = $pelicula["Nombre"];
     $descripcion = $pelicula["Descripcion"];
     $precio = $pelicula["Precio"];
-    $valoracion = $pelicula["Valoracion"];
-    $comentarios = $pelicula["Comentarios"];
+    $valoracion = Pelicula::obtenerValoracion($id);
+    $comentarios = Pelicula::obtenerComentarios($id);
 
     //Funcion para cargar valoraciones y comentarios de la tabla de usuarios
     if (isset($_SESSION['id']) && Alquiler::estaAlquilado($_SESSION['id'], $id)) {

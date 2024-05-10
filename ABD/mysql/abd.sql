@@ -193,3 +193,8 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+use abd;
+INSERT INTO `usuario` (`id`, `correo`, `nombreUsuario`, `contrasena`, `rol`) VALUES
+(1,'admin@gmail.com', 'admin', '$2y$10$meHVFJK6MnRlXGg7Sa5LzuzUWDyOKCWeB13fMXYK3vbeP8ERlE8TG', 1),
+(2,'usuario@gmail.com', 'usuario', '$2y$10$c3AsaIfscpS1yStdSFj3YejSgKk6GmCE9TScx6x4F0lTDlwf5OZjW', 0);

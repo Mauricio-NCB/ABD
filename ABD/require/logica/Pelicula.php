@@ -120,14 +120,12 @@ class Pelicula {
         $result = $conn->query($query);
         if ($result && $fila = $result->fetch_assoc()) {
 
-            $pelicula = array('Id', 'Nombre', 'Descripcion', 'Precio', 'Valoracion', 'Comentarios');
+            $pelicula = array('Id', 'Nombre', 'Descripcion', 'Precio');
 
             $pelicula['Id'] = $id;
             $pelicula['Nombre'] = $fila['nombre'];
             $pelicula['Descripcion'] = $fila['descripcion']; 
             $pelicula['Precio'] = $fila['precio'];
-            $pelicula['Valoracion'] = Pelicula::obtenerValoracion($id);
-            $pelicula['Comentarios'] = Pelicula::obtenerComentarios($id);
 
             return $pelicula;
         }
@@ -162,9 +160,15 @@ class Pelicula {
 
     }
 
-    static function obtenerValoracion($idPelicula) {
+    static function obtenerValoracion($idPelicula, $idUsuario = null) {
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "SELECT AVG(puntuacion) AS valoracion FROM valoracion V WHERE V.idPelicula= '$idPelicula'";
+
+        if ($idUsuario == null) {
+            $query = "SELECT AVG(puntuacion) AS valoracion FROM valoracion V WHERE V.idPelicula= '$idPelicula'";
+        } 
+        else {
+            $query = "SELECT puntuacion AS valoracion FROM valoracion V WHERE V.idPelicula= '$idPelicula' AND V.idUsuario= '$idUsuario'";
+        }
         $result = $conn->query($query)->fetch_assoc();
         
         if ($result) {
@@ -174,9 +178,16 @@ class Pelicula {
         return null;
     }
 
-    static function obtenerComentarios($idPelicula) {
+    static function obtenerComentarios($idPelicula, $idUsuario = null) {
         $conn = Aplicacion::getInstance()->getConexionBd();
-        $query = "SELECT * FROM valoracion V WHERE V.idPelicula= '$idPelicula'";
+
+        if ($idUsuario == null) {
+            $query = "SELECT * FROM valoracion V WHERE V.idPelicula= '$idPelicula'";
+        } 
+        else {
+            $query = "SELECT * FROM valoracion V WHERE V.idPelicula= '$idPelicula'AND V.idUsuario= '$idUsuario'";
+        }
+
         $result = $conn->query($query);
         $comentarios = [];
 

@@ -1,3 +1,6 @@
+-- Revisión de claves foráneas desactivadas para una importación sin problemas
+
+
 use abd;
 
 TRUNCATE TABLE `alquiler`;

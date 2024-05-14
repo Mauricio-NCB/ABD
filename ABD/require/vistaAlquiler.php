@@ -24,7 +24,6 @@ function generarContenidoPrincipal($idUsuario, $subtitulo) {
             $puntuacion = Pelicula::obtenerValoracion($pelicula['Id'], $idUsuario);
             $comentario = Pelicula::obtenerComentarios($pelicula['Id'], $idUsuario);
 
-
             $contenidoPrincipal .= <<< EOS
                 <p>Nombre de la pelicula: <a href="producto.php?id=$pelicula[Id]"> {$pelicula['Nombre']} </a> </p>
                 <p>Descripcion de la pelicula: {$pelicula['Descripcion']}</p>
@@ -44,6 +43,8 @@ function generarContenidoPrincipal($idUsuario, $subtitulo) {
             } else {
                 $contenidoPrincipal .= "<p>No hay comentarios sobre esta película.</p>";
             }
+
+
     
             $contenidoPrincipal .= <<< EOS
                 <p>-------------------------------------</p>

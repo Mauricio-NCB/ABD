@@ -43,9 +43,11 @@ class FormularioEliminarPuntuacion extends Formulario
             $this->errores[] = "Ha ocurrido un error inesperado";
         }
 
-        if (!Alquiler::estaPuntuado($this->idUsuario, $this->idPelicula) &&
-            !Alquiler::estaComentado($this->idUsuario, $this->idPelicula)) {
-                Alquiler::eliminarValoracion($this->idUsuario, $this->idPelicula);
+        $puntuacion = Pelicula::obtenerValoracion($this->idPelicula, $this->idUsuario);
+        $comentario = Pelicula::obtenerComentarios($this->idPelicula, $this->idUsuario);
+
+        if (empty($puntuacion) && empty($comentario)) {
+            Alquiler::eliminarValoracion($this->idUsuario, $this->idPelicula);
         }
 
         header("Location: ".$this->urlRedireccion);

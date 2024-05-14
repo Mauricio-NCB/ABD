@@ -27,6 +27,5 @@ INSERT INTO `alquiler` (`id`, `idUsuario`, `idPelicula`, `fechaInicio`, `fechaFi
 
 INSERT INTO `valoracion` (`id`, `idUsuario`, `idPelicula`, `puntuacion`, `comentario`) VALUES
 (1, 1, 1, 10, 'La mejor para ser su primera pelicula'),
-(2, 1, 2, null, null),
-(3, 2, 1, null, 'Aun no sé que puntuacion poner'),
-(4, 2, 2, 1, 'Muy mala la segunda pelicula');
+(2, 2, 1, null, 'Aun no sé que puntuacion poner'),
+(3, 2, 2, 1, 'Muy mala la segunda pelicula');

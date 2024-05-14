@@ -14,15 +14,17 @@ function generarContenidoPrincipal($idUsuario, $subtitulo) {
     if(count($alquileres) != 0){
         foreach ($alquileres as $alquiler) {
             $pelicula = Pelicula::buscarPelicula($alquiler['idPelicula']);        
-            $puntuacion = Pelicula::obtenerValoracion($pelicula['Id'], $idUsuario);
-            $comentario = Pelicula::obtenerComentarios($pelicula['Id'], $idUsuario);
-    
+
             $formDelPuntuacion = new FormularioEliminarPuntuacion($alquiler['idUsuario'], $pelicula['Id']);
             $htmlFormPunt = $formDelPuntuacion->gestiona();
     
             $formDelComentario = new FormularioEliminarComentario($alquiler['idUsuario'], $pelicula['Id']);
             $htmlFormCom = $formDelComentario->gestiona();
     
+            $puntuacion = Pelicula::obtenerValoracion($pelicula['Id'], $idUsuario);
+            $comentario = Pelicula::obtenerComentarios($pelicula['Id'], $idUsuario);
+
+
             $contenidoPrincipal .= <<< EOS
                 <p>Nombre de la pelicula: <a href="producto.php?id=$pelicula[Id]"> {$pelicula['Nombre']} </a> </p>
                 <p>Descripcion de la pelicula: {$pelicula['Descripcion']}</p>

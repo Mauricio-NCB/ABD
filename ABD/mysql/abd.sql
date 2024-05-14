@@ -65,9 +65,9 @@ CREATE TABLE IF NOT EXISTS `pelicula` (
 CREATE TABLE IF NOT EXISTS `tarjeta` (
   `id` int(11) NOT NULL,
   `idUsuario` int(11) NOT NULL,
-  `numeroTarjeta` int(16) NOT NULL,
+  `numeroTarjeta` varchar(255) NOT NULL,
   `fechaTarjeta` date NOT NULL,
-  `cvvTarjeta` int(3) NOT NULL
+  `cvvTarjeta` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -194,7 +194,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
-use abd;
-INSERT INTO `usuario` (`id`, `correo`, `nombreUsuario`, `contrasena`, `rol`) VALUES
-(1,'admin@gmail.com', 'admin', '$2y$10$meHVFJK6MnRlXGg7Sa5LzuzUWDyOKCWeB13fMXYK3vbeP8ERlE8TG', 1),
-(2,'usuario@gmail.com', 'usuario', '$2y$10$c3AsaIfscpS1yStdSFj3YejSgKk6GmCE9TScx6x4F0lTDlwf5OZjW', 0);

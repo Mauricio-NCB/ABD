@@ -7,10 +7,11 @@ class FormularioEliminarPuntuacion extends Formulario
 {
     private $idUsuario;
     private $idPelicula;
+    protected $urlRedireccion;
 
     public function __construct($idUsuario, $idPelicula)
     {
-        parent::__construct('formDelPuntuacion', ['urlRedireccion' => 'gestionAlquileres.php']);
+        parent::__construct("formDelPuntuacion_{$idPelicula}");
         $this->idUsuario = $idUsuario;
         $this->idPelicula = $idPelicula;
     }
@@ -20,6 +21,11 @@ class FormularioEliminarPuntuacion extends Formulario
         $idPelicula = $this->idPelicula;
         $idUsuario = $this->idUsuario;
         $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
+
+        $this->urlRedireccion = $_SERVER['PHP_SELF'];
+        if (basename($this->urlRedireccion) === 'alquilerElegido.php') {
+            $this->urlRedireccion .= "?idUsuario=$idUsuario";
+        }    
 
         $html = <<<EOF
             <input type="hidden" name="idUsuario" value="{$idUsuario}">
@@ -41,5 +47,7 @@ class FormularioEliminarPuntuacion extends Formulario
             !Alquiler::estaComentado($this->idUsuario, $this->idPelicula)) {
                 Alquiler::eliminarValoracion($this->idUsuario, $this->idPelicula);
         }
+
+        header("Location: ".$this->urlRedireccion);
     }
 }

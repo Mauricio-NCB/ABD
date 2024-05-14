@@ -74,22 +74,20 @@ class Alquiler {
 
     }
 
-    public static function mostrarPeliculasAlquiladas($idUsuario = null){
+    public static function mostrarPeliculasAlquiladas($idUsuario){
         $conn = Aplicacion::getInstance()->getConexionBd();
 
         if ($idUsuario != null) {
             $query = sprintf("SELECT * FROM alquiler WHERE idUsuario = '%s'", $conn->real_escape_string($idUsuario));
-        } else {
-            $query = "SELECT * FROM alquiler";
         }
-        
+            
         $rs = $conn->query($query);
         $alquileres = [];
     
         if ($rs->num_rows != 0) {
             while ($fila = $rs->fetch_assoc()) {
                 if ($fila) {
-                    $alquileres[] = $fila; // Agregar la fila completa del alquiler al array
+                    $alquileres[] = $fila;
                 }
             }
         }
@@ -134,7 +132,7 @@ class Alquiler {
         $rs = $conn->query($query);
         $comentado = false;
 
-        if ($rs->fetch_assoc()) {
+        if ($rs->fetch_assoc() != '') {
             $comentado = true;
         }
 

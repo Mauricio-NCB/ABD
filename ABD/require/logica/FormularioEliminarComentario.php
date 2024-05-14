@@ -10,7 +10,7 @@ class FormularioEliminarComentario extends Formulario
 
     public function __construct($idUsuario, $idPelicula)
     {
-        parent::__construct('formDelComentario', ['urlRedireccion' => 'gestionAlquileres.php']);
+        parent::__construct("formDelComentario_{$idPelicula}", ['urlRedireccion' => $_SERVER['PHP_SELF']]);
         $this->idUsuario = $idUsuario;
         $this->idPelicula = $idPelicula;
     }

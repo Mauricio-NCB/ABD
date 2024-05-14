@@ -21,6 +21,13 @@ class FormularioDarAdmin extends Formulario {
         $htmlErroresGlobales = self::generaListaErroresGlobales($this->errores);
         $erroresCampos = self::generaErroresCampos([], $this->errores, 'span', array('class' => 'error'));
 
+        if ($usuario->getRol() == 1) {
+            $botonAdmin = '<label for="admin">Este usuario ya es administrador</label>';
+        }
+        else {
+            $botonAdmin = '<div> <button type="submit" name="Guardar">Dar permiso de administrador</button> </div>';
+        }
+
         $html = <<<EOF
         $htmlErroresGlobales
         <fieldset>
@@ -41,9 +48,8 @@ class FormularioDarAdmin extends Formulario {
                 <input id="password" type="password" name="password"  value="********" readonly/> </p>
             </div> 
 
-            <div>
-                <button type="submit" name="Guardar">Dar permiso de administrador</button>
-            </div>
+            $botonAdmin
+
         </fieldset>
         EOF;
         return $html;

@@ -1,23 +1,10 @@
 <?php
 require_once __DIR__."/require/config.php";
-
-use abd\FormularioModificarUsuario as FormularioModificarUsuario;
+require_once __DIR__."/require/selUsuario.php";
 
 $tituloPagina = 'Gestión de usuarios';
+$paginaRedireccion = 'usuarioElegido';
 
-$contenidoPrincipal = '';
-
-if (! isset($_SESSION['esAdmin']) || !$_SESSION['esAdmin']) {
-	header("Location:indice.php");
-}
-else {
-	$formModUsuario = new FormularioModificarUsuario();
-	$htmlForm = $formModUsuario->gestiona();
-
-    $contenidoPrincipal = <<<EOS
-	<h1>Gestión de usuarios</h1>
-	$htmlForm
-	EOS;
-}
+$contenidoPrincipal = generarContenidoPrincipal($tituloPagina, $paginaRedireccion);
 
 require __DIR__.'/require/vistas/plantillas/plantilla.php';
